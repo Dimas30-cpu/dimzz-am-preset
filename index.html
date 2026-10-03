@@ -648,6 +648,7 @@
     }
 
     @media (max-width: 700px) {
+
       body {
         padding: 12px;
       }
@@ -701,6 +702,7 @@
       .small-btn {
         white-space: nowrap;
       }
+
     }
   </style>
 </head>
@@ -730,7 +732,10 @@
 
       <section class="card">
 
-        <label class="input-label" for="tiktokUrl">
+        <label
+          class="input-label"
+          for="tiktokUrl"
+        >
           LINK VIDEO TIKTOK
         </label>
 
@@ -759,7 +764,10 @@
 
         </div>
 
-        <div id="errorBox" class="error"></div>
+        <div
+          id="errorBox"
+          class="error"
+        ></div>
 
       </section>
 
@@ -859,8 +867,7 @@
             <div
               id="videoBox"
               class="video-box"
-            >
-            </div>
+            ></div>
 
 
             <div class="video-info">
@@ -899,15 +906,13 @@
               <div
                 id="caption"
                 class="caption"
-              >
-              </div>
+              ></div>
 
 
               <div
                 id="stats"
                 class="stats"
-              >
-              </div>
+              ></div>
 
 
               <a
@@ -950,8 +955,7 @@
           <div
             id="presetList"
             class="preset-list"
-          >
-          </div>
+          ></div>
 
 
           <div
@@ -982,7 +986,19 @@
   ></div>
 
 
-  <!-- CONFIG -->
+  <!--
+    ============================================================
+    CONFIG
+    ============================================================
+
+    Tidak membutuhkan RapidAPI.
+
+    Endpoint utama:
+    https://tikwm.com/api/
+
+    config.js boleh ada, tetapi kalau tidak ada,
+    scanner tetap menggunakan DEFAULT_CONFIG.
+  -->
 
   <script src="config.js"></script>
 
@@ -992,7 +1008,7 @@
     /*
      * ============================================================
      * PRESET HUNTER
-     * TikWM version
+     * TIKWM VERSION
      * ============================================================
      */
 
@@ -1024,18 +1040,26 @@
     let lastRequestTime = 0;
 
 
+    let currentPresets = [];
+
+
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * HELPERS
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
 
     function sleep(ms) {
 
-      return new Promise(resolve => {
-        setTimeout(resolve, ms);
-      });
+      return new Promise(
+        resolve => {
+          setTimeout(
+            resolve,
+            ms
+          );
+        }
+      );
 
     }
 
@@ -1043,21 +1067,29 @@
     async function throttle() {
 
       const delay =
-        Number(APP_CONFIG.REQUEST_DELAY_MS) || 0;
+        Number(
+          APP_CONFIG.REQUEST_DELAY_MS
+        ) || 0;
+
 
       const now =
         Date.now();
 
+
       const elapsed =
         now - lastRequestTime;
 
-      if (elapsed < delay) {
+
+      if (
+        elapsed < delay
+      ) {
 
         await sleep(
           delay - elapsed
         );
 
       }
+
 
       lastRequestTime =
         Date.now();
@@ -1067,12 +1099,29 @@
 
     function escapeHtml(value) {
 
-      return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
     }
 
@@ -1082,14 +1131,23 @@
       const n =
         Number(value);
 
-      if (!Number.isFinite(n)) {
+
+      if (
+        !Number.isFinite(n)
+      ) {
+
         return "0";
+
       }
 
-      return new Intl.NumberFormat("id-ID", {
-        notation: "compact",
-        maximumFractionDigits: 1
-      }).format(n);
+
+      return new Intl.NumberFormat(
+        "id-ID",
+        {
+          notation: "compact",
+          maximumFractionDigits: 1
+        }
+      ).format(n);
 
     }
 
@@ -1097,23 +1155,36 @@
     function showToast(message) {
 
       const toast =
-        document.getElementById("toast");
+        document.getElementById(
+          "toast"
+        );
+
 
       toast.textContent =
         message;
 
-      toast.classList.add("show");
+
+      toast.classList.add(
+        "show"
+      );
+
 
       clearTimeout(
         showToast.timer
       );
 
+
       showToast.timer =
-        setTimeout(() => {
+        setTimeout(
+          () => {
 
-          toast.classList.remove("show");
+            toast.classList.remove(
+              "show"
+            );
 
-        }, 2200);
+          },
+          2200
+        );
 
     }
 
@@ -1121,13 +1192,23 @@
     function showError(message) {
 
       const box =
-        document.getElementById("errorBox");
+        document.getElementById(
+          "errorBox"
+        );
+
 
       box.innerHTML =
-        escapeHtml(message)
-          .replace(/\n/g, "<br>");
+        escapeHtml(
+          message
+        ).replace(
+          /\n/g,
+          "<br>"
+        );
 
-      box.classList.add("show");
+
+      box.classList.add(
+        "show"
+      );
 
     }
 
@@ -1135,17 +1216,26 @@
     function clearError() {
 
       const box =
-        document.getElementById("errorBox");
+        document.getElementById(
+          "errorBox"
+        );
+
 
       box.innerHTML =
         "";
 
-      box.classList.remove("show");
+
+      box.classList.remove(
+        "show"
+      );
 
     }
 
 
-    function setProgress(percent, text) {
+    function setProgress(
+      percent,
+      text
+    ) {
 
       document.getElementById(
         "progressFill"
@@ -1167,21 +1257,27 @@
     }
 
 
-    function setStep(step, state) {
+    function setStep(
+      step,
+      state
+    ) {
 
       const element =
         document.getElementById(
           `step${step}`
         );
 
+
       if (!element) {
         return;
       }
+
 
       element.classList.remove(
         "active",
         "done"
       );
+
 
       if (state) {
 
@@ -1202,40 +1298,54 @@
         "Replies",
         "Scan",
         "Done"
-      ].forEach(step => {
+      ].forEach(
+        step => {
 
-        setStep(
-          step,
-          ""
-        );
+          setStep(
+            step,
+            ""
+          );
 
-      });
+        }
+      );
 
     }
 
 
     /*
-     * ------------------------------------------------------------
-     * TIKTOK URL VALIDATION
-     * ------------------------------------------------------------
+     * ============================================================
+     * TIKTOK URL
+     * ============================================================
      */
 
 
-    function isTikTokUrl(value) {
+    function isTikTokUrl(
+      value
+    ) {
 
       try {
 
         const url =
-          new URL(value);
+          new URL(
+            value
+          );
+
 
         const host =
           url.hostname
             .toLowerCase()
-            .replace(/^www\./, "");
+            .replace(
+              /^www\./,
+              ""
+            );
+
 
         return (
-          host === "tiktok.com" ||
-          host.endsWith(".tiktok.com")
+          host ===
+            "tiktok.com" ||
+          host.endsWith(
+            ".tiktok.com"
+          )
         );
 
       } catch {
@@ -1248,9 +1358,9 @@
 
 
     /*
-     * ------------------------------------------------------------
-     * TIKWM API
-     * ------------------------------------------------------------
+     * ============================================================
+     * TIKWM REQUEST
+     * ============================================================
      */
 
 
@@ -1263,7 +1373,10 @@
         String(
           APP_CONFIG.TIKWM_API ||
           DEFAULT_CONFIG.TIKWM_API
-        ).replace(/\/+$/, "");
+        ).replace(
+          /\/+$/,
+          ""
+        );
 
 
       let url =
@@ -1276,25 +1389,29 @@
 
       Object.entries(
         params || {}
-      ).forEach(([key, value]) => {
+      ).forEach(
+        ([key, value]) => {
 
-        if (
-          value !== undefined &&
-          value !== null &&
-          value !== ""
-        ) {
+          if (
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+          ) {
 
-          query.set(
-            key,
-            String(value)
-          );
+            query.set(
+              key,
+              String(value)
+            );
+
+          }
 
         }
+      );
 
-      });
 
-
-      if (query.toString()) {
+      if (
+        query.toString()
+      ) {
 
         url +=
           `?${query.toString()}`;
@@ -1306,6 +1423,7 @@
 
 
       let response;
+
 
       try {
 
@@ -1338,10 +1456,13 @@
 
       let json;
 
+
       try {
 
         json =
-          JSON.parse(raw);
+          JSON.parse(
+            raw
+          );
 
       } catch {
 
@@ -1352,11 +1473,16 @@
       }
 
 
-      if (!response.ok) {
+      if (
+        !response.ok
+      ) {
 
         throw new Error(
           `TikWM HTTP ${response.status}: ` +
-          `${json.msg || raw}`
+          `${
+            json.msg ||
+            raw
+          }`
         );
 
       }
@@ -1381,9 +1507,9 @@
 
 
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * VIDEO
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
 
@@ -1394,7 +1520,8 @@
       return await tikwmRequest(
         "",
         {
-          url: tiktokUrl
+          url:
+            tiktokUrl
         }
       );
 
@@ -1441,12 +1568,14 @@
 
       const nickname =
         author.nickname ||
+        author.name ||
         data.nickname ||
         "TikTok User";
 
 
       const uniqueId =
         author.unique_id ||
+        author.uniqueId ||
         author.uniqueId ||
         data.unique_id ||
         data.uniqueId ||
@@ -1457,13 +1586,15 @@
         author.avatar ||
         author.avatar_thumb ||
         author.avatarLarger ||
+        author.avatar_medium ||
         data.author_avatar ||
         "";
 
 
       return {
 
-        raw: data,
+        raw:
+          data,
 
         id:
           data.id ||
@@ -1511,9 +1642,9 @@
 
 
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * COMMENTS
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
 
@@ -1521,11 +1652,17 @@
       tiktokUrl
     ) {
 
-      const allComments = [];
+      const allComments =
+        [];
 
-      let cursor = 0;
 
-      let page = 0;
+      let cursor =
+        0;
+
+
+      let page =
+        0;
+
 
       const maxComments =
         Math.max(
@@ -1558,8 +1695,11 @@
           await tikwmRequest(
             "comment/list",
             {
-              url: tiktokUrl,
+              url:
+                tiktokUrl,
+
               count,
+
               cursor
             }
           );
@@ -1601,9 +1741,13 @@
 
 
         if (
-          nextCursor === undefined ||
-          nextCursor === null ||
-          String(nextCursor) ===
+          nextCursor ===
+            undefined ||
+          nextCursor ===
+            null ||
+          String(
+            nextCursor
+          ) ===
             String(cursor)
         ) {
 
@@ -1627,9 +1771,311 @@
 
 
     /*
-     * ------------------------------------------------------------
-     * REPLIES
-     * ------------------------------------------------------------
+     * ============================================================
+     * TEXT DARI COMMENT / REPLY
+     * ============================================================
+     */
+
+
+    function commentText(
+      comment
+    ) {
+
+      if (
+        !comment
+      ) {
+
+        return "";
+
+      }
+
+
+      return (
+        comment.text ||
+        comment.content ||
+        comment.comment_text ||
+        comment.commentText ||
+        comment.desc ||
+        ""
+      );
+
+    }
+
+
+    /*
+     * ============================================================
+     * REPLY TOTAL
+     * ============================================================
+     */
+
+
+    function getReplyTotal(
+      comment
+    ) {
+
+      const possibleValues = [
+
+        comment?.reply_total,
+
+        comment?.replyTotal,
+
+        comment?.reply_count,
+
+        comment?.replyCount,
+
+        comment?.total_reply,
+
+        comment?.totalReply
+
+      ];
+
+
+      for (
+        const value of
+        possibleValues
+      ) {
+
+        const number =
+          Number(value);
+
+
+        if (
+          Number.isFinite(number) &&
+          number > 0
+        ) {
+
+          return number;
+
+        }
+
+      }
+
+
+      /*
+       * Beberapa struktur API
+       * bisa mempunyai object replies.
+       */
+
+      const nested =
+        extractNestedReplies(
+          comment
+        );
+
+
+      return nested.length;
+
+    }
+
+
+    /*
+     * ============================================================
+     * NESTED REPLIES
+     *
+     * Sebagian response dapat mempunyai
+     * reply langsung di dalam object comment.
+     * ============================================================
+     */
+
+
+    function extractNestedReplies(
+      comment
+    ) {
+
+      const result =
+        [];
+
+
+      const visited =
+        new WeakSet();
+
+
+      const replyFields = [
+
+        "replies",
+
+        "reply",
+
+        "reply_comments",
+
+        "replyComments",
+
+        "reply_list",
+
+        "replyList",
+
+        "children",
+
+        "sub_comments",
+
+        "subComments"
+
+      ];
+
+
+      function walk(
+        obj,
+        depth
+      ) {
+
+        if (
+          !obj ||
+          typeof obj !== "object"
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          depth > 8
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          visited.has(obj)
+        ) {
+
+          return;
+
+        }
+
+
+        visited.add(obj);
+
+
+        if (
+          Array.isArray(obj)
+        ) {
+
+          obj.forEach(
+            child => {
+
+              walk(
+                child,
+                depth + 1
+              );
+
+            }
+          );
+
+          return;
+
+        }
+
+
+        replyFields.forEach(
+          field => {
+
+            const value =
+              obj[field];
+
+
+            if (
+              Array.isArray(value)
+            ) {
+
+              value.forEach(
+                item => {
+
+                  if (
+                    item &&
+                    typeof item ===
+                      "object"
+                  ) {
+
+                    result.push(
+                      item
+                    );
+
+                    walk(
+                      item,
+                      depth + 1
+                    );
+
+                  }
+
+                }
+              );
+
+            } else if (
+              value &&
+              typeof value ===
+                "object"
+            ) {
+
+              result.push(
+                value
+              );
+
+              walk(
+                value,
+                depth + 1
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+
+      walk(
+        comment,
+        0
+      );
+
+
+      /*
+       * Deduplicate reply object.
+       */
+
+      const unique =
+        new Map();
+
+
+      result.forEach(
+        item => {
+
+          const id =
+            item?.id ||
+            item?.cid ||
+            item?.comment_id ||
+            item?.commentId ||
+            JSON.stringify(item);
+
+
+          if (
+            !unique.has(id)
+          ) {
+
+            unique.set(
+              id,
+              item
+            );
+
+          }
+
+        }
+      );
+
+
+      return Array.from(
+        unique.values()
+      );
+
+    }
+
+
+    /*
+     * ============================================================
+     * REPLIES API
+     * ============================================================
      */
 
 
@@ -1637,20 +2083,57 @@
       comment
     ) {
 
-      const total =
-        Number(
-          comment?.reply_total ||
-          comment?.replyTotal ||
-          0
-        );
-
-
       if (
-        !comment?.id ||
-        total <= 0
+        !comment
       ) {
 
         return [];
+
+      }
+
+
+      const commentId =
+        comment.id ||
+        comment.cid ||
+        comment.comment_id ||
+        comment.commentId ||
+        "";
+
+
+      const total =
+        getReplyTotal(
+          comment
+        );
+
+
+      /*
+       * Kalau tidak punya ID,
+       * gunakan nested replies kalau ada.
+       */
+
+      if (
+        !commentId
+      ) {
+
+        return extractNestedReplies(
+          comment
+        );
+
+      }
+
+
+      /*
+       * Jika reply_total = 0,
+       * tetap cek nested reply.
+       */
+
+      if (
+        total <= 0
+      ) {
+
+        return extractNestedReplies(
+          comment
+        );
 
       }
 
@@ -1667,11 +2150,16 @@
         );
 
 
-      const replies = [];
+      const replies =
+        [];
 
-      let cursor = 0;
 
-      let page = 0;
+      let cursor =
+        0;
+
+
+      let page =
+        0;
 
 
       while (
@@ -1697,7 +2185,7 @@
             "comment/reply",
             {
               comment_id:
-                comment.id,
+                commentId,
 
               count,
 
@@ -1742,9 +2230,13 @@
 
 
         if (
-          nextCursor === undefined ||
-          nextCursor === null ||
-          String(nextCursor) ===
+          nextCursor ===
+            undefined ||
+          nextCursor ===
+            null ||
+          String(
+            nextCursor
+          ) ===
             String(cursor)
         ) {
 
@@ -1759,7 +2251,59 @@
       }
 
 
-      return replies.slice(
+      /*
+       * Gabungkan nested replies
+       * bila ada.
+       */
+
+      const nested =
+        extractNestedReplies(
+          comment
+        );
+
+
+      replies.push(
+        ...nested
+      );
+
+
+      /*
+       * Deduplicate.
+       */
+
+      const unique =
+        new Map();
+
+
+      replies.forEach(
+        item => {
+
+          const id =
+            item?.id ||
+            item?.cid ||
+            item?.comment_id ||
+            item?.commentId ||
+            JSON.stringify(item);
+
+
+          if (
+            !unique.has(id)
+          ) {
+
+            unique.set(
+              id,
+              item
+            );
+
+          }
+
+        }
+      );
+
+
+      return Array.from(
+        unique.values()
+      ).slice(
         0,
         maxReplies
       );
@@ -1768,32 +2312,204 @@
 
 
     /*
-     * ------------------------------------------------------------
-     * TEXT EXTRACTION
-     * ------------------------------------------------------------
+     * ============================================================
+     * SCAN SEMUA STRING DALAM OBJECT
+     * ============================================================
      */
 
 
-    function commentText(
-      comment
+    function scanObjectForUrls(
+      object,
+      source,
+      addUrl
     ) {
 
-      return (
-        comment?.text ||
-        comment?.content ||
-        comment?.comment_text ||
-        ""
+      const visited =
+        new WeakSet();
+
+
+      function walk(
+        value,
+        currentSource
+      ) {
+
+        if (
+          value === null ||
+          value === undefined
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          typeof value ===
+          "string"
+        ) {
+
+          const urls =
+            findUrls(
+              value
+            );
+
+
+          urls.forEach(
+            url => {
+
+              addUrl(
+                url,
+                currentSource
+              );
+
+            }
+          );
+
+
+          return;
+
+        }
+
+
+        if (
+          typeof value !==
+          "object"
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          visited.has(value)
+        ) {
+
+          return;
+
+        }
+
+
+        visited.add(
+          value
+        );
+
+
+        if (
+          Array.isArray(value)
+        ) {
+
+          value.forEach(
+            item => {
+
+              walk(
+                item,
+                currentSource
+              );
+
+            }
+          );
+
+          return;
+
+        }
+
+
+        Object.entries(
+          value
+        ).forEach(
+          ([key, child]) => {
+
+            let nextSource =
+              currentSource;
+
+
+            const lowerKey =
+              String(key)
+                .toLowerCase();
+
+
+            if (
+              lowerKey.includes(
+                "caption"
+              ) ||
+              lowerKey ===
+                "title" ||
+              lowerKey ===
+                "desc" ||
+              lowerKey ===
+                "description"
+            ) {
+
+              nextSource =
+                "Caption / Metadata";
+
+            }
+
+
+            if (
+              lowerKey.includes(
+                "comment"
+              )
+            ) {
+
+              nextSource =
+                "Komentar";
+
+            }
+
+
+            if (
+              lowerKey.includes(
+                "reply"
+              ) ||
+              lowerKey.includes(
+                "replies"
+              )
+            ) {
+
+              nextSource =
+                "Reply";
+
+            }
+
+
+            walk(
+              child,
+              nextSource
+            );
+
+          }
+        );
+
+      }
+
+
+      walk(
+        object,
+        source
       );
 
     }
+
+
+    /*
+     * ============================================================
+     * URL EXTRACTION
+     * ============================================================
+     */
 
 
     function findUrls(
       text
     ) {
 
-      if (!text) {
+      if (
+        !text
+      ) {
+
         return [];
+
       }
 
 
@@ -1804,24 +2520,26 @@
 
 
       return matches
-        .map(url => {
+        .map(
+          url => {
 
-          return url
-            .replace(
-              /[)\]}>.,!?;:'"]+$/g,
-              ""
-            );
+            return url
+              .replace(
+                /[)\]}>.,!?;:'"]+$/g,
+                ""
+              );
 
-        })
+          }
+        )
         .filter(Boolean);
 
     }
 
 
     /*
-     * ------------------------------------------------------------
-     * PRESET DETECTION
-     * ------------------------------------------------------------
+     * ============================================================
+     * PRESET URL DETECTION
+     * ============================================================
      */
 
 
@@ -1829,13 +2547,18 @@
       value
     ) {
 
-      let url =
-        String(value || "")
-          .trim();
+      const url =
+        String(
+          value || ""
+        ).trim();
 
 
-      if (!url) {
+      if (
+        !url
+      ) {
+
         return false;
+
       }
 
 
@@ -1844,11 +2567,15 @@
 
 
       /*
-       * Jangan masukkan URL TikTok
+       * Jangan anggap TikTok sebagai preset.
        */
+
       if (
         lower.includes(
           "tiktok.com"
+        ) ||
+        lower.includes(
+          "tiktokcdn.com"
         )
       ) {
 
@@ -1858,31 +2585,66 @@
 
 
       /*
-       * Domain / keyword preset
+       * Link resmi / umum
+       * Alight Motion.
        */
+
       const presetKeywords = [
 
+        "alightcreative.com",
+
         "alightmotion",
+
         "alight-motion",
+
         "alight motion",
+
         "alight.link",
+
         "amshare",
+
         "preset",
 
         ".xml",
 
         "project",
-        "template"
+
+        "template",
+
+        /*
+         * Google Drive sering dipakai
+         * untuk file XML.
+         */
+
+        "drive.google.com/file/",
+
+        "drive.google.com/drive/"
 
       ];
 
 
       return presetKeywords.some(
         keyword =>
-          lower.includes(keyword)
+          lower.includes(
+            keyword
+          )
       );
 
     }
+
+
+    /*
+     * ============================================================
+     * FIND PRESET LINKS
+     *
+     * Scan:
+     * - Caption
+     * - Metadata
+     * - Comment
+     * - Reply
+     * - Semua nested object
+     * ============================================================
+     */
 
 
     function findPresetLinks(
@@ -1895,111 +2657,132 @@
         new Map();
 
 
-      function addFromText(
-        text,
+      function addUrl(
+        url,
         source
       ) {
 
-        const urls =
-          findUrls(text);
+        if (
+          !url
+        ) {
+
+          return;
+
+        }
 
 
-        urls.forEach(url => {
+        let clean =
+          String(
+            url
+          )
+            .trim()
+            .replace(
+              /[)\]}>.,!?;:'"]+$/g,
+              ""
+            );
 
-          if (
-            isPresetUrl(url)
-          ) {
 
-            const key =
-              url.toLowerCase();
+        if (
+          !clean
+        ) {
+
+          return;
+
+        }
 
 
-            if (!found.has(key)) {
+        if (
+          !isPresetUrl(
+            clean
+          )
+        ) {
 
-              found.set(
-                key,
-                {
-                  url,
-                  source
-                }
-              );
+          return;
 
+        }
+
+
+        const key =
+          clean.toLowerCase();
+
+
+        if (
+          !found.has(key)
+        ) {
+
+          found.set(
+            key,
+            {
+              url:
+                clean,
+
+              source:
+                source
             }
+          );
 
-          }
-
-        });
+        }
 
       }
 
 
       /*
-       * Caption
+       * Caption.
        */
 
-      addFromText(
-        videoData.title,
-        "Caption"
+      addUrlFromText(
+        videoData?.title,
+        "Caption",
+        addUrl
       );
 
 
       /*
-       * Scan metadata video
-       *
-       * Ini berguna kalau API memasukkan
-       * link tertentu di field metadata.
+       * Semua metadata video.
        */
 
-      try {
+      scanObjectForUrls(
+        videoData?.raw || {},
+        "Metadata",
+        addUrl
+      );
 
-        const rawText =
-          JSON.stringify(
-            videoData.raw || {}
+
+      /*
+       * Semua comment object.
+       *
+       * Ini penting karena link bisa berada
+       * bukan di comment.text saja.
+       */
+
+      comments.forEach(
+        comment => {
+
+          scanObjectForUrls(
+            comment,
+            "Komentar",
+            addUrl
           );
 
-
-        addFromText(
-          rawText,
-          "Metadata"
-        );
-
-      } catch {
-        // abaikan
-      }
+        }
+      );
 
 
       /*
-       * Comments
+       * Semua reply object.
        */
 
-      for (
-        const comment of
-        comments
-      ) {
+      replies.forEach(
+        reply => {
 
-        addFromText(
-          commentText(comment),
-          "Komentar"
-        );
+          scanObjectForUrls(
+            reply,
+            "Reply",
+            addUrl
+          );
 
-      }
-
-
-      /*
-       * Replies
-       */
-
-      for (
-        const reply of
-        replies
-      ) {
-
-        addFromText(
-          commentText(reply),
-          "Reply"
-        );
-
-      }
+        }
+      );
 
 
       return Array.from(
@@ -2009,10 +2792,41 @@
     }
 
 
+    function addUrlFromText(
+      text,
+      source,
+      addUrl
+    ) {
+
+      if (
+        !text
+      ) {
+
+        return;
+
+      }
+
+
+      findUrls(
+        text
+      ).forEach(
+        url => {
+
+          addUrl(
+            url,
+            source
+          );
+
+        }
+      );
+
+    }
+
+
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * RENDER VIDEO
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
 
@@ -2038,7 +2852,9 @@
         );
 
 
-      if (data.videoUrl) {
+      if (
+        data.videoUrl
+      ) {
 
         videoBox.innerHTML = `
 
@@ -2046,13 +2862,19 @@
             controls
             playsinline
             preload="metadata"
-            poster="${safeCover}"
+            ${
+              data.cover
+                ? `poster="${safeCover}"`
+                : ""
+            }
             src="${safeVideo}"
           ></video>
 
         `;
 
-      } else if (data.cover) {
+      } else if (
+        data.cover
+      ) {
 
         videoBox.innerHTML = `
 
@@ -2088,7 +2910,8 @@
       document.getElementById(
         "creatorName"
       ).textContent =
-        data.nickname;
+        data.nickname ||
+        "TikTok User";
 
 
       document.getElementById(
@@ -2105,7 +2928,9 @@
         );
 
 
-      if (data.avatar) {
+      if (
+        data.avatar
+      ) {
 
         avatar.src =
           data.avatar;
@@ -2133,19 +2958,27 @@
       ).innerHTML = `
 
         <div class="stat">
-          ❤️ ${formatNumber(data.diggCount)}
+          ❤️ ${formatNumber(
+            data.diggCount
+          )}
         </div>
 
         <div class="stat">
-          💬 ${formatNumber(data.commentCount)}
+          💬 ${formatNumber(
+            data.commentCount
+          )}
         </div>
 
         <div class="stat">
-          🔁 ${formatNumber(data.shareCount)}
+          🔁 ${formatNumber(
+            data.shareCount
+          )}
         </div>
 
         <div class="stat">
-          ▶ ${formatNumber(data.playCount)}
+          ▶ ${formatNumber(
+            data.playCount
+          )}
         </div>
 
       `;
@@ -2157,7 +2990,9 @@
         );
 
 
-      if (data.videoUrl) {
+      if (
+        data.videoUrl
+      ) {
 
         download.href =
           data.videoUrl;
@@ -2176,9 +3011,9 @@
 
 
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * RENDER PRESETS
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
 
@@ -2198,7 +3033,9 @@
         `${presets.length} link`;
 
 
-      if (!presets.length) {
+      if (
+        !presets.length
+      ) {
 
         list.innerHTML = `
 
@@ -2222,79 +3059,87 @@
 
 
       list.innerHTML =
-        presets.map(
-          (preset, index) => {
+        presets
+          .map(
+            (preset, index) => {
 
-            const url =
-              escapeHtml(
-                preset.url
-              );
-
-
-            return `
-
-              <div class="preset">
-
-                <div class="preset-icon">
-                  ⚡
-                </div>
+              const url =
+                escapeHtml(
+                  preset.url
+                );
 
 
-                <div class="preset-content">
+              return `
 
-                  <div class="preset-name">
-                    Preset #${index + 1}
+                <div class="preset">
+
+                  <div class="preset-icon">
+                    ⚡
                   </div>
 
-                  <div class="preset-url">
-                    ${url}
+
+                  <div class="preset-content">
+
+                    <div class="preset-name">
+                      Preset #${index + 1}
+                    </div>
+
+                    <div class="preset-url">
+                      ${url}
+                    </div>
+
+                    <div
+                      style="
+                        margin-top:4px;
+                        color:#777b8b;
+                        font-size:10px;
+                      "
+                    >
+                      Sumber:
+                      ${escapeHtml(
+                        preset.source
+                      )}
+                    </div>
+
                   </div>
 
-                  <div
-                    style="
-                      margin-top:4px;
-                      color:#777b8b;
-                      font-size:10px;
-                    "
-                  >
-                    Sumber: ${escapeHtml(preset.source)}
+
+                  <div class="preset-actions">
+
+                    <button
+                      class="small-btn"
+                      type="button"
+                      onclick="openPreset(${index})"
+                    >
+                      BUKA
+                    </button>
+
+                    <button
+                      class="small-btn"
+                      type="button"
+                      onclick="copyPreset(${index})"
+                    >
+                      COPY
+                    </button>
+
                   </div>
 
                 </div>
 
+              `;
 
-                <div class="preset-actions">
-
-                  <button
-                    class="small-btn"
-                    type="button"
-                    onclick="openPreset(${index})"
-                  >
-                    BUKA
-                  </button>
-
-                  <button
-                    class="small-btn"
-                    type="button"
-                    onclick="copyPreset(${index})"
-                  >
-                    COPY
-                  </button>
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
+            }
+          )
+          .join("");
 
     }
 
 
-    let currentPresets = [];
+    /*
+     * ============================================================
+     * OPEN PRESET
+     * ============================================================
+     */
 
 
     function openPreset(
@@ -2302,11 +3147,17 @@
     ) {
 
       const preset =
-        currentPresets[index];
+        currentPresets[
+          index
+        ];
 
 
-      if (!preset) {
+      if (
+        !preset
+      ) {
+
         return;
+
       }
 
 
@@ -2319,16 +3170,29 @@
     }
 
 
+    /*
+     * ============================================================
+     * COPY PRESET
+     * ============================================================
+     */
+
+
     async function copyPreset(
       index
     ) {
 
       const preset =
-        currentPresets[index];
+        currentPresets[
+          index
+        ];
 
 
-      if (!preset) {
+      if (
+        !preset
+      ) {
+
         return;
+
       }
 
 
@@ -2338,41 +3202,46 @@
           preset.url
         );
 
+
         showToast(
           "Link preset berhasil dicopy."
         );
 
       } catch {
 
-        /*
-         * Fallback browser lama
-         */
-
         const textarea =
           document.createElement(
             "textarea"
           );
 
+
         textarea.value =
           preset.url;
+
 
         textarea.style.position =
           "fixed";
 
+
         textarea.style.opacity =
           "0";
+
 
         document.body.appendChild(
           textarea
         );
 
+
         textarea.select();
+
 
         document.execCommand(
           "copy"
         );
 
+
         textarea.remove();
+
 
         showToast(
           "Link preset berhasil dicopy."
@@ -2384,9 +3253,9 @@
 
 
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * MAIN SCANNER
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
 
@@ -2423,13 +3292,17 @@
         input.value.trim();
 
 
-      if (!tiktokUrl) {
+      if (
+        !tiktokUrl
+      ) {
 
         showError(
           "Masukkan link TikTok terlebih dahulu."
         );
 
+
         input.focus();
+
 
         return;
 
@@ -2446,7 +3319,9 @@
           "Link yang dimasukkan bukan URL TikTok yang valid."
         );
 
+
         input.focus();
+
 
         return;
 
@@ -2454,24 +3329,29 @@
 
 
       /*
-       * Reset
+       * Reset.
        */
 
       result.classList.remove(
         "show"
       );
 
+
       progressCard.classList.add(
         "show"
       );
 
+
       scanButton.disabled =
         true;
+
 
       scanButton.textContent =
         "SCANNING...";
 
+
       resetSteps();
+
 
       setProgress(
         2,
@@ -2479,11 +3359,17 @@
       );
 
 
+      currentPresets =
+        [];
+
+
       let videoData =
         null;
 
+
       let comments =
         [];
+
 
       let replies =
         [];
@@ -2493,7 +3379,8 @@
 
         /*
          * ========================================================
-         * STEP 1 — VIDEO
+         * STEP 1
+         * VIDEO
          * ========================================================
          */
 
@@ -2501,6 +3388,7 @@
           "Video",
           "active"
         );
+
 
         setProgress(
           8,
@@ -2539,7 +3427,8 @@
 
         /*
          * ========================================================
-         * STEP 2 — COMMENTS
+         * STEP 2
+         * COMMENTS
          * ========================================================
          */
 
@@ -2562,18 +3451,15 @@
               tiktokUrl
             );
 
-        } catch (commentError) {
+        } catch (
+          commentError
+        ) {
 
           console.warn(
             "Comment fetch failed:",
             commentError
           );
 
-
-          /*
-           * Jangan gagalkan seluruh scanner
-           * hanya karena komentar gagal.
-           */
 
           comments =
             [];
@@ -2602,7 +3488,8 @@
 
         /*
          * ========================================================
-         * STEP 3 — REPLIES
+         * STEP 3
+         * REPLIES
          * ========================================================
          */
 
@@ -2619,10 +3506,39 @@
 
 
         /*
-         * Ambil reply satu per satu.
+         * Pertama ambil nested reply yang sudah
+         * berada di object komentar.
+         */
+
+        for (
+          const comment of
+          comments
+        ) {
+
+          const nestedReplies =
+            extractNestedReplies(
+              comment
+            );
+
+
+          if (
+            nestedReplies.length
+          ) {
+
+            replies.push(
+              ...nestedReplies
+            );
+
+          }
+
+        }
+
+
+        /*
+         * Kemudian panggil endpoint
+         * comment/reply.
          *
-         * Sengaja sequential supaya tidak
-         * membanjiri API.
+         * Sequential agar tidak membanjiri API.
          */
 
         for (
@@ -2636,16 +3552,22 @@
 
 
           const replyTotal =
-            Number(
-              comment?.reply_total ||
-              comment?.replyTotal ||
-              0
+            getReplyTotal(
+              comment
             );
+
+
+          const commentId =
+            comment?.id ||
+            comment?.cid ||
+            comment?.comment_id ||
+            comment?.commentId ||
+            "";
 
 
           if (
             replyTotal > 0 &&
-            comment?.id
+            commentId
           ) {
 
             try {
@@ -2660,7 +3582,9 @@
                 ...foundReplies
               );
 
-            } catch (replyError) {
+            } catch (
+              replyError
+            ) {
 
               console.warn(
                 "Reply fetch failed:",
@@ -2693,6 +3617,50 @@
         }
 
 
+        /*
+         * Deduplicate semua reply.
+         */
+
+        const uniqueReplies =
+          new Map();
+
+
+        replies.forEach(
+          reply => {
+
+            const id =
+              reply?.id ||
+              reply?.cid ||
+              reply?.comment_id ||
+              reply?.commentId ||
+              JSON.stringify(
+                reply
+              );
+
+
+            if (
+              !uniqueReplies.has(
+                id
+              )
+            ) {
+
+              uniqueReplies.set(
+                id,
+                reply
+              );
+
+            }
+
+          }
+        );
+
+
+        replies =
+          Array.from(
+            uniqueReplies.values()
+          );
+
+
         setStep(
           "Replies",
           "done"
@@ -2701,7 +3669,8 @@
 
         /*
          * ========================================================
-         * STEP 4 — SCAN
+         * STEP 4
+         * SCAN
          * ========================================================
          */
 
@@ -2774,21 +3743,27 @@
         );
 
 
-        /*
-         * Scroll hasil
-         */
+        setTimeout(
+          () => {
 
-        setTimeout(() => {
+            result.scrollIntoView(
+              {
+                behavior:
+                  "smooth",
 
-          result.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
+                block:
+                  "start"
+              }
+            );
 
-        }, 150);
+          },
+          150
+        );
 
 
-      } catch (error) {
+      } catch (
+        error
+      ) {
 
         console.error(
           error
@@ -2801,27 +3776,33 @@
         );
 
 
-        showError(
-          "Scanner gagal: " +
-          error.message
-        );
+        const message =
+          String(
+            error?.message ||
+            error ||
+            "Unknown error"
+          );
 
-
-        /*
-         * Kalau error terjadi karena CORS,
-         * tampilkan petunjuk yang lebih jelas.
-         */
 
         if (
-          error.message
+          message
             .toLowerCase()
-            .includes("cors")
+            .includes("cors") ||
+          message
+            .toLowerCase()
+            .includes("browser")
         ) {
 
           showError(
-            "Scanner gagal karena browser memblokir request ke TikWM (CORS). " +
-            "Jika ini terjadi di GitHub Pages, solusinya adalah menggunakan " +
-            "backend/proxy. Coba buka ulang setelah memastikan endpoint TikWM dapat diakses."
+            "Scanner gagal karena browser tidak dapat mengakses TikWM. " +
+            "Periksa koneksi/CORS endpoint TikWM."
+          );
+
+        } else {
+
+          showError(
+            "Scanner gagal: " +
+            message
           );
 
         }
@@ -2830,6 +3811,7 @@
 
         scanButton.disabled =
           false;
+
 
         scanButton.textContent =
           "🔎 SCAN";
@@ -2840,20 +3822,23 @@
 
 
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * ENTER KEY
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
 
     document
-      .getElementById("tiktokUrl")
+      .getElementById(
+        "tiktokUrl"
+      )
       .addEventListener(
         "keydown",
         event => {
 
           if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
           ) {
 
             startScan();
@@ -2865,13 +3850,16 @@
 
 
     /*
-     * ------------------------------------------------------------
+     * ============================================================
      * PASTE HANDLER
-     * ------------------------------------------------------------
+     * ============================================================
      */
 
+
     document
-      .getElementById("tiktokUrl")
+      .getElementById(
+        "tiktokUrl"
+      )
       .addEventListener(
         "paste",
         () => {
@@ -2880,7 +3868,6 @@
 
         }
       );
-
 
   </script>
 
