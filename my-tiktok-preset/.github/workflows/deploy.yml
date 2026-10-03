@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Inject RapidAPI Key
+        env:
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          p = Path("config.js")
+          text = p.read_text(encoding="utf-8")
+          key = os.environ["RAPIDAPI_KEY"]
+          if not key:
+              raise SystemExit("Missing repository secret RAPIDAPI_KEY")
+          p.write_text(text.replace("__RAPIDAPI_KEY__", key), encoding="utf-8")
+          PY
+
+      - name: Prepare Pages
+        run: |
+          mkdir -p public
+          cp index.html public/index.html
+          cp config.js public/config.js
+          touch public/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
