@@ -2,322 +2,447 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Preset Hunter</title>
 
+<script src="config.js"></script>
+
 <style>
-:root{
-  --bg:#07070b;
-  --card:rgba(22,22,31,.78);
-  --card2:rgba(255,255,255,.045);
-  --line:rgba(255,255,255,.10);
-  --text:#fff;
-  --muted:#9696aa;
-  --purple:#8b2cff;
-  --purple2:#4f00ff;
-  --cyan:#00eaff;
-  --green:#00f58a;
-  --red:#ff3b68;
-  --shadow:0 25px 70px rgba(0,0,0,.45);
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-html,body{min-height:100%;background:var(--bg);color:var(--text)}
-body{overflow-x:hidden;padding:18px 12px 45px}
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:-25%;
-  z-index:-5;
+body{
+  min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#fff;
   background:
-    radial-gradient(circle at 15% 15%,rgba(139,44,255,.20),transparent 28%),
-    radial-gradient(circle at 85% 30%,rgba(0,234,255,.13),transparent 25%),
-    radial-gradient(circle at 50% 100%,rgba(79,0,255,.18),transparent 30%);
-  animation:bgFloat 12s ease-in-out infinite alternate;
+    radial-gradient(circle at 20% 10%,rgba(116,70,255,.20),transparent 35%),
+    radial-gradient(circle at 80% 90%,rgba(0,220,255,.15),transparent 35%),
+    #050509;
+  padding:25px 14px 50px;
 }
 
-body:after{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-4;
-  pointer-events:none;
-  background-image:
-    radial-gradient(circle,rgba(255,255,255,.18) 1px,transparent 1px);
-  background-size:34px 34px;
-  mask-image:linear-gradient(to bottom,transparent,black 25%,black 70%,transparent);
-  opacity:.18;
+.container{
+  width:100%;
+  max-width:900px;
+  margin:auto;
 }
 
-@keyframes bgFloat{
-  from{transform:translate3d(-2%,0,0) scale(1)}
-  to{transform:translate3d(2%,-2%,0) scale(1.08)}
+.header{
+  text-align:center;
+  margin-bottom:25px;
 }
 
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
-
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 0 0 rgba(139,44,255,.0)}
-  50%{box-shadow:0 0 35px 8px rgba(139,44,255,.13)}
-}
-
-@keyframes shimmer{
-  0%{background-position:-500px 0}
-  100%{background-position:500px 0}
-}
-
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@keyframes scan{
-  0%{transform:translateY(-110%)}
-  100%{transform:translateY(110%)}
-}
-
-@keyframes reveal{
-  from{opacity:0;transform:translateY(20px) scale(.98)}
-  to{opacity:1;transform:none}
-}
-
-@keyframes glow{
-  0%,100%{opacity:.55}
-  50%{opacity:1}
-}
-
-.container{width:100%;max-width:820px;margin:auto;display:flex;flex-direction:column;gap:14px}
-
-.topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:6px 4px 2px;
-}
-
-.brand{display:flex;align-items:center;gap:10px}
 .logo{
-  width:42px;height:42px;border-radius:14px;
-  display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--purple),var(--cyan));
-  box-shadow:0 0 30px rgba(139,44,255,.35);
-  animation:float 4s ease-in-out infinite;
+  font-size:38px;
+  font-weight:900;
+  letter-spacing:2px;
+  background:linear-gradient(90deg,#a56cff,#00e5ff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
 }
-.logo:after{content:"✦";font-size:22px}
-.brandText strong{display:block;font-size:15px}
-.brandText span{display:block;color:var(--muted);font-size:11px;margin-top:1px}
 
-.statusPill{
-  display:flex;align-items:center;gap:6px;
-  padding:7px 10px;border-radius:999px;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--line);
-  color:#bfc0cf;font-size:10px;
+.subtitle{
+  margin-top:7px;
+  color:#9a9aa8;
+  font-size:14px;
 }
-.statusDot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
 
 .card{
-  position:relative;overflow:hidden;
-  background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:18px;
-  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.045);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
-  animation:reveal .55s ease both;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 20px 70px rgba(0,0,0,.35);
 }
 
-.hero{padding:24px 18px 18px;text-align:center}
-.heroGlow{
-  position:absolute;width:190px;height:190px;border-radius:50%;
-  background:var(--purple);filter:blur(85px);opacity:.17;
-  left:50%;top:-100px;transform:translateX(-50%);
-  pointer-events:none;
+.input-wrap{
+  display:flex;
+  gap:10px;
+  margin-bottom:15px;
 }
 
-.badge{
-  position:relative;display:inline-flex;gap:7px;align-items:center;
-  padding:7px 11px;border-radius:999px;
-  color:#d8c5ff;background:rgba(139,44,255,.10);
-  border:1px solid rgba(139,44,255,.25);
-  font-size:10px;font-weight:700;letter-spacing:.5px;
-  text-transform:uppercase;
-}
-.badge i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
-
-h1{
-  position:relative;margin:13px 0 7px;
-  font-size:28px;line-height:1.08;letter-spacing:-1.1px;
-  background:linear-gradient(90deg,#fff,#caa9ff,#6ff7ff,#fff);
-  background-size:250% auto;
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  animation:shimmer 5s linear infinite;
-}
-.sub{position:relative;color:var(--muted);font-size:12px;line-height:1.55}
-
-.searchBox{
-  position:relative;margin-top:18px;
-  background:rgba(0,0,0,.28);
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:18px;padding:7px;
-  transition:.25s;
-}
-.searchBox:focus-within{
-  border-color:rgba(139,44,255,.65);
-  box-shadow:0 0 0 4px rgba(139,44,255,.09),0 0 35px rgba(139,44,255,.12);
-}
 input{
-  width:100%;height:50px;border:0;outline:0;background:transparent;
-  color:white;padding:0 94px 0 14px;font-size:13px;
+  flex:1;
+  min-width:0;
+  border:none;
+  outline:none;
+  border-radius:14px;
+  padding:16px;
+  background:rgba(255,255,255,.07);
+  color:#fff;
+  font-size:14px;
+  border:1px solid rgba(255,255,255,.08);
 }
-input::placeholder{color:#666679}
-.inputBtns{
-  position:absolute;right:7px;top:7px;display:flex;gap:5px;
-}
-.iconBtn{
-  width:39px;height:36px;border-radius:11px;
-  border:1px solid var(--line);background:rgba(255,255,255,.06);
-  color:#ddd;cursor:pointer;transition:.2s;
-}
-.iconBtn:active{transform:scale(.92)}
-.iconBtn:hover{background:rgba(255,255,255,.11)}
 
-.scanBtn{
-  position:relative;overflow:hidden;width:100%;margin-top:10px;height:53px;
-  border:0;border-radius:16px;cursor:pointer;color:white;
-  font-size:14px;font-weight:800;
-  background:linear-gradient(110deg,var(--purple2),var(--purple),#00a6ff);
-  box-shadow:0 13px 35px rgba(100,0,255,.24);
-  transition:.25s;
+input::placeholder{
+  color:#777783;
 }
-.scanBtn:before{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(110deg,transparent,rgba(255,255,255,.22),transparent);
-  transform:translateX(-110%);
-}
-.scanBtn:hover:before{animation:shimmer 1s ease}
-.scanBtn:active{transform:scale(.985)}
-.scanBtn:disabled{opacity:.7;cursor:wait}
-.btnInner{display:flex;align-items:center;justify-content:center;gap:9px;position:relative}
-.spinner{width:17px;height:17px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 
-.progressCard{display:none;padding:16px}
-.progressHeader{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.progressTitle{font-weight:800;font-size:13px}
-.progressDetail{font-size:10px;color:var(--muted);margin-top:3px}
-.percent{font-size:12px;color:#bfa8ff;font-weight:800}
-.progressTrack{height:7px;border-radius:99px;background:rgba(255,255,255,.06);margin-top:13px;overflow:hidden}
-.progressBar{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .3s ease;box-shadow:0 0 18px rgba(139,44,255,.55)}
-.steps{display:flex;justify-content:space-between;margin-top:11px}
-.step{font-size:9px;color:#575769;transition:.25s}
-.step.active{color:#cbb9ff;font-weight:bold}
+button{
+  border:none;
+  cursor:pointer;
+  color:#fff;
+  border-radius:14px;
+  font-weight:800;
+  transition:.2s;
+}
 
-.result{display:none}
-.resultMedia{
-  position:relative;border-radius:20px;overflow:hidden;
-  background:#000;border:1px solid rgba(255,255,255,.08);
+button:hover{
+  transform:translateY(-1px);
 }
-video{display:block;width:100%;max-height:470px;aspect-ratio:16/9;object-fit:contain;background:#000}
-.mediaScan{
-  display:none;position:absolute;left:0;right:0;height:70px;top:0;
-  background:linear-gradient(to bottom,transparent,rgba(0,234,255,.20),transparent);
-  animation:scan 1.7s linear infinite;pointer-events:none;
+
+.scan-btn{
+  padding:0 22px;
+  background:linear-gradient(135deg,#7546ff,#00c9ff);
+  min-height:52px;
 }
-.mediaMeta{
-  position:absolute;left:10px;top:10px;
-  padding:6px 9px;border-radius:99px;
-  background:rgba(0,0,0,.52);border:1px solid rgba(255,255,255,.1);
-  font-size:9px;color:#ddd;backdrop-filter:blur(8px)
+
+.scan-btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.progress{
+  display:none;
+  margin-top:20px;
+}
+
+.progress.show{
+  display:block;
+}
+
+.progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+  font-size:13px;
+}
+
+.progress-title{
+  font-weight:800;
+}
+
+.progress-percent{
+  color:#00d9ff;
+}
+
+.bar{
+  height:8px;
+  background:rgba(255,255,255,.08);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.bar-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#7849ff,#00e5ff);
+  border-radius:20px;
+  transition:.35s;
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:7px;
+  margin-top:14px;
+}
+
+.step{
+  text-align:center;
+  padding:8px 4px;
+  border-radius:10px;
+  background:rgba(255,255,255,.035);
+  color:#656572;
+  font-size:10px;
+  font-weight:800;
+}
+
+.step.active{
+  color:#fff;
+  background:rgba(112,75,255,.18);
+}
+
+.step.done{
+  color:#00e5ff;
+}
+
+.status{
+  margin-top:14px;
+  font-size:12px;
+  color:#858592;
+  line-height:1.6;
+}
+
+.error{
+  display:none;
+  margin-top:15px;
+  padding:13px;
+  border-radius:12px;
+  background:rgba(255,60,90,.10);
+  border:1px solid rgba(255,60,90,.25);
+  color:#ff8c9d;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.error.show{
+  display:block;
+}
+
+.result{
+  display:none;
+  margin-top:20px;
+}
+
+.result.show{
+  display:block;
+}
+
+.video-card{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:18px;
+  padding:15px;
+  border-radius:18px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.video-box{
+  width:180px;
+  aspect-ratio:9/16;
+  background:#000;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.video-box video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.info h2{
+  font-size:20px;
+  margin-bottom:8px;
+  word-break:break-word;
+}
+
+.username{
+  color:#9f9fa9;
+  margin-bottom:13px;
+}
+
+.caption{
+  color:#c8c8d0;
+  line-height:1.55;
+  font-size:13px;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:15px;
+}
+
+.stat{
+  background:rgba(255,255,255,.06);
+  border-radius:9px;
+  padding:7px 9px;
+  color:#aaaab4;
+  font-size:11px;
 }
 
 .download{
-  display:flex;align-items:center;justify-content:center;gap:9px;
-  margin-top:9px;width:100%;height:48px;border-radius:14px;
-  color:#fff;text-decoration:none;font-size:13px;font-weight:800;
-  background:linear-gradient(110deg,var(--purple2),var(--purple));
-  box-shadow:0 10px 30px rgba(90,0,255,.2);
-  transition:.2s;
-}
-.download:active{transform:scale(.98)}
-
-.author{
-  display:flex;align-items:center;gap:11px;margin-top:12px;
-  padding:12px;border-radius:16px;background:rgba(255,255,255,.045);
-  border:1px solid var(--line);
-}
-.avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;background:#171720;border:1px solid rgba(255,255,255,.13)}
-.authorName{font-weight:800;font-size:13px}
-.authorUser{font-size:10px;color:var(--cyan);margin-top:2px}
-.authorTag{margin-left:auto;padding:6px 8px;border-radius:8px;background:rgba(0,230,118,.08);color:#8fffc5;font-size:9px;border:1px solid rgba(0,230,118,.16)}
-
-.caption{
-  margin-top:12px;padding:13px;border-radius:16px;
-  background:rgba(255,255,255,.025);border:1px dashed rgba(255,255,255,.10);
-  color:#c8c8d2;font-size:11px;line-height:1.65;word-break:break-word;
+  display:inline-block;
+  margin-top:14px;
+  padding:10px 13px;
+  border-radius:10px;
+  color:#fff;
+  text-decoration:none;
+  background:rgba(0,220,255,.12);
+  border:1px solid rgba(0,220,255,.20);
+  font-size:12px;
+  font-weight:800;
 }
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.stat{padding:12px;border-radius:15px;background:rgba(255,255,255,.035);border:1px solid var(--line);text-align:center}
-.stat b{display:block;font-size:16px;color:#fff}
-.stat span{display:block;font-size:8px;color:#77788c;margin-top:2px;text-transform:uppercase;letter-spacing:.6px}
-
-.sectionTitle{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-top:17px;margin-bottom:9px;
-}
-.sectionTitle h2{font-size:16px}
-.count{
-  padding:5px 8px;border-radius:999px;color:#001f12;background:var(--green);
-  font-size:10px;font-weight:900;box-shadow:0 0 20px rgba(0,245,138,.22)
+.section{
+  margin-top:20px;
 }
 
-.presetList{display:flex;flex-direction:column;gap:9px}
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.section-title h3{
+  font-size:15px;
+}
+
+.badge{
+  font-size:10px;
+  padding:5px 8px;
+  border-radius:8px;
+  background:rgba(0,220,255,.10);
+  color:#00dfff;
+}
+
+.preset-list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
 .preset{
-  position:relative;overflow:hidden;padding:13px;border-radius:17px;
-  background:linear-gradient(135deg,rgba(0,245,138,.075),rgba(255,255,255,.025));
-  border:1px solid rgba(0,245,138,.20);
-  animation:reveal .45s ease both;
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
 }
-.preset:before{
-  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:linear-gradient(var(--green),var(--cyan));box-shadow:0 0 15px rgba(0,245,138,.45)
+
+.preset-top{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
 }
-.presetTop{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.source{font-size:9px;color:#6fffc0;text-transform:uppercase;font-weight:900;letter-spacing:.7px}
-.presetUser{font-size:9px;color:#737487}
-.presetText{margin:7px 0;color:#d6d6df;font-size:10px;line-height:1.5;font-style:italic;word-break:break-word}
-.presetUrl{
-  display:block;padding:9px;border-radius:10px;
-  background:rgba(0,0,0,.23);border:1px solid rgba(255,255,255,.07);
-  color:white;font-size:9px;font-weight:700;line-height:1.45;word-break:break-all;
+
+.preset-number{
+  min-width:27px;
+  height:27px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  background:linear-gradient(135deg,#7446ff,#00cfff);
+  font-size:11px;
+  font-weight:900;
 }
-.actions{display:flex;gap:7px;margin-top:9px}
+
+.preset-body{
+  min-width:0;
+  flex:1;
+}
+
+.preset-name{
+  font-weight:800;
+  font-size:13px;
+  margin-bottom:5px;
+  word-break:break-word;
+}
+
+.preset-source{
+  color:#81818c;
+  font-size:10px;
+  line-height:1.5;
+  word-break:break-word;
+}
+
+.preset-url{
+  margin-top:7px;
+  font-size:10px;
+  color:#00dfff;
+  word-break:break-all;
+}
+
+.preset-actions{
+  display:flex;
+  gap:7px;
+  margin-top:11px;
+  flex-wrap:wrap;
+}
+
 .action{
-  flex:1;height:36px;border:0;border-radius:10px;cursor:pointer;font-size:10px;font-weight:800;transition:.2s
+  padding:8px 10px;
+  background:rgba(255,255,255,.07);
+  font-size:10px;
 }
-.action:active{transform:scale(.96)}
-.open{background:var(--green);color:#00150c}
-.copy{background:rgba(255,255,255,.08);color:white;border:1px solid var(--line)}
+
+.action.open{
+  background:rgba(0,220,255,.12);
+}
+
+.comments-info{
+  color:#898995;
+  font-size:11px;
+  line-height:1.6;
+}
 
 .empty{
-  padding:25px 14px;text-align:center;border-radius:17px;
-  background:rgba(255,255,255,.025);border:1px dashed var(--line);color:#77788c;font-size:11px
+  padding:20px;
+  text-align:center;
+  color:#777783;
+  border:1px dashed rgba(255,255,255,.10);
+  border-radius:14px;
+  font-size:12px;
 }
-.emptyIcon{font-size:30px;display:block;margin-bottom:8px;opacity:.5}
 
-.error{display:none;text-align:center;border-color:rgba(255,59,104,.22);background:rgba(255,59,104,.05)}
-.errorIcon{font-size:30px;margin-bottom:8px}
-.error h3{font-size:14px;color:#ff7b99}
-.error p{font-size:10px;color:#999aaa;margin-top:5px;line-height:1.5}
+.debug{
+  margin-top:18px;
+  padding:12px;
+  border-radius:12px;
+  background:#020204;
+  border:1px solid rgba(255,255,255,.06);
+  color:#73737d;
+  font-size:10px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  word-break:break-word;
+  display:none;
+}
 
-.footer{text-align:center;color:#4d4e5d;font-size:9px;padding:5px}
+.debug.show{
+  display:block;
+}
 
-@media(max-width:430px){
-  body{padding:12px 9px 30px}
-  .card{border-radius:21px;padding:14px}
-  .hero{padding:20px 13px 14px}
-  h1{font-size:25px}
-  video{max-height:380px}
+@media(max-width:650px){
+  body{
+    padding:16px 10px 35px;
+  }
+
+  .logo{
+    font-size:30px;
+  }
+
+  .input-wrap{
+    flex-direction:column;
+  }
+
+  .scan-btn{
+    width:100%;
+  }
+
+  .video-card{
+    grid-template-columns:1fr;
+  }
+
+  .video-box{
+    width:100%;
+    max-width:250px;
+    margin:auto;
+  }
+
+  .steps{
+    grid-template-columns:repeat(5,1fr);
+  }
+
+  .step{
+    font-size:8px;
+  }
 }
 </style>
 </head>
@@ -326,1320 +451,1193 @@ video{display:block;width:100%;max-height:470px;aspect-ratio:16/9;object-fit:con
 
 <div class="container">
 
-  <div class="topbar">
-    <div class="brand">
-      <div class="logo"></div>
-      <div class="brandText">
-        <strong>Preset Hunter</strong>
-        <span>TikTok × Alight Motion</span>
-      </div>
-    </div>
-
-    <div class="statusPill">
-      <span class="statusDot"></span>
-      SYSTEM READY
+  <div class="header">
+    <div class="logo">PRESET HUNTER</div>
+    <div class="subtitle">
+      TikTok → Comments → Replies → Preset Scanner
     </div>
   </div>
 
-  <section class="card hero">
-    <div class="heroGlow"></div>
+  <div class="card">
 
-    <div class="badge">
-      <i></i>
-      SMART PRESET SCANNER
-    </div>
-
-    <h1>Cari Preset Lebih Dalam</h1>
-
-    <p class="sub">
-      Scan caption, komentar, nested replies, dan metadata
-      untuk menemukan link preset secara otomatis.
-    </p>
-
-    <div class="searchBox">
+    <div class="input-wrap">
       <input
-        id="url"
+        id="tiktokUrl"
         type="text"
+        placeholder="Paste link TikTok di sini..."
         autocomplete="off"
-        placeholder="Tempel link TikTok di sini..."
       >
 
-      <div class="inputBtns">
-        <button class="iconBtn" onclick="clearInput()">×</button>
-        <button class="iconBtn" onclick="pasteClipboard()">⌁</button>
-      </div>
-    </div>
-
-    <button id="scanBtn" class="scanBtn" onclick="startScan()">
-      <span class="btnInner">
-        <span id="spinner" class="spinner" style="display:none"></span>
-        <span id="btnIcon">✦</span>
-        <span id="btnText">Cari Preset & Video</span>
-      </span>
-    </button>
-  </section>
-
-  <section id="progressCard" class="card progressCard">
-
-    <div class="progressHeader">
-      <div>
-        <div id="progressTitle" class="progressTitle">
-          Memulai scanner...
-        </div>
-
-        <div id="progressDetail" class="progressDetail">
-          Menyiapkan koneksi
-        </div>
-      </div>
-
-      <div id="percent" class="percent">
-        0%
-      </div>
-    </div>
-
-    <div class="progressTrack">
-      <div id="progressBar" class="progressBar"></div>
-    </div>
-
-    <div class="steps">
-      <span id="stepVideo" class="step">VIDEO</span>
-      <span id="stepComments" class="step">COMMENTS</span>
-      <span id="stepReplies" class="step">REPLIES</span>
-      <span id="stepScan" class="step">SCAN</span>
-      <span id="stepDone" class="step">DONE</span>
-    </div>
-
-  </section>
-
-  <section id="errorCard" class="card error">
-
-    <div class="errorIcon">⚠</div>
-
-    <h3 id="errorText">
-      Gagal mengambil data
-    </h3>
-
-    <p>
-      Pastikan link TikTok benar dan RapidAPI Key sudah diisi.
-      Detail teknis tersedia di Console browser.
-    </p>
-
-  </section>
-
-  <section id="resultCard" class="card result">
-
-    <div class="resultMedia">
-
-      <video
-        id="previewVideo"
-        controls
-        playsinline
-        preload="metadata"
-      ></video>
-
-      <div id="mediaScan" class="mediaScan"></div>
-
-      <div class="mediaMeta">
-        TIKTOK VIDEO
-      </div>
-
-    </div>
-
-    <a
-      id="downloadVideoBtn"
-      class="download"
-      href="#"
-      target="_blank"
-      rel="noopener"
-    >
-      ↓ &nbsp; DOWNLOAD VIDEO HD
-    </a>
-
-    <div class="author">
-
-      <img
-        id="authorAvatar"
-        class="avatar"
-        alt="Avatar"
+      <button
+        id="scanButton"
+        class="scan-btn"
+        onclick="startScan()"
       >
+        SCAN
+      </button>
+    </div>
 
-      <div>
-        <div id="authorNickname" class="authorName">
-          TikTok User
+    <div id="errorBox" class="error"></div>
+
+    <div id="progress" class="progress">
+
+      <div class="progress-top">
+        <div id="progressTitle" class="progress-title">
+          Preparing...
         </div>
 
-        <div id="authorUsername" class="authorUser">
-          @user
+        <div id="progressPercent" class="progress-percent">
+          0%
         </div>
       </div>
 
-      <div class="authorTag">
-        CREATOR
+      <div class="bar">
+        <div id="barFill" class="bar-fill"></div>
+      </div>
+
+      <div class="steps">
+        <div id="stepVideo" class="step">VIDEO</div>
+        <div id="stepComments" class="step">COMMENTS</div>
+        <div id="stepReplies" class="step">REPLIES</div>
+        <div id="stepScan" class="step">SCAN</div>
+        <div id="stepDone" class="step">DONE</div>
+      </div>
+
+      <div id="statusText" class="status">
+        Menyiapkan scanner...
       </div>
 
     </div>
 
-    <div id="captionText" class="caption">
-      Caption: -
-    </div>
+    <div id="result" class="result">
 
-    <div class="stats">
+      <div class="video-card">
 
-      <div class="stat">
-        <b id="statPresets">0</b>
-        <span>Preset</span>
+        <div class="video-box">
+          <video
+            id="videoPlayer"
+            controls
+            playsinline
+            preload="metadata"
+          ></video>
+        </div>
+
+        <div class="info">
+
+          <h2 id="authorName">-</h2>
+
+          <div id="authorUsername" class="username">
+            @-
+          </div>
+
+          <div id="caption" class="caption">
+            -
+          </div>
+
+          <div class="stats">
+            <div id="statLikes" class="stat">❤️ 0</div>
+            <div id="statComments" class="stat">💬 0</div>
+            <div id="statShares" class="stat">↗️ 0</div>
+            <div id="statViews" class="stat">👁️ 0</div>
+          </div>
+
+          <a
+            id="downloadVideo"
+            class="download"
+            href="#"
+            target="_blank"
+            rel="noopener"
+          >
+            DOWNLOAD VIDEO
+          </a>
+
+        </div>
+
       </div>
 
-      <div class="stat">
-        <b id="statComments">0</b>
-        <span>Comments</span>
+      <div class="section">
+
+        <div class="section-title">
+          <h3>PRESET FOUND</h3>
+          <div id="presetCount" class="badge">0 LINK</div>
+        </div>
+
+        <div id="presetList" class="preset-list"></div>
+
       </div>
 
-      <div class="stat">
-        <b id="statLinks">0</b>
-        <span>Links</span>
+      <div class="section">
+
+        <div class="section-title">
+          <h3>SCAN INFO</h3>
+        </div>
+
+        <div id="commentsInfo" class="comments-info">
+          -
+        </div>
+
       </div>
+
+      <div id="debugBox" class="debug"></div>
 
     </div>
 
-    <div class="sectionTitle">
-      <h2>Preset Ditemukan</h2>
-      <span id="presetCount" class="count">0</span>
-    </div>
-
-    <div id="presetList" class="presetList"></div>
-
-  </section>
-
-  <div class="footer">
-    Preset Hunter • Smart scanner • GitHub Pages
   </div>
 
 </div>
 
-<!-- RAPIDAPI CONFIG -->
-<script src="config.js"></script>
-
 <script>
+
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
+
+const state = {
+  comments: [],
+  replies: [],
+  allTexts: [],
+  presets: [],
+  videoData: null,
+  originalUrl: ""
+};
+
+
+/* =========================================================
+   DOM
+========================================================= */
+
 const $ = id => document.getElementById(id);
 
-let currentProgress = 0;
 
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
 
-/* =========================
-   INPUT
-========================= */
-
-function clearInput(){
-  $("url").value = "";
-  $("url").focus();
+function escapeHtml(value){
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 
-async function pasteClipboard(){
+function formatNumber(value){
+  const n = Number(value || 0);
 
-  try{
+  if(!Number.isFinite(n)) return "0";
 
-    const text = await navigator.clipboard.readText();
-
-    if(text){
-      $("url").value = text.trim();
-    }
-
-  }catch(error){
-
-    showError(
-      "Clipboard tidak bisa dibaca. Tempel link TikTok secara manual."
-    );
-
+  if(n >= 1000000000){
+    return (n / 1000000000).toFixed(1) + "B";
   }
 
+  if(n >= 1000000){
+    return (n / 1000000).toFixed(1) + "M";
+  }
+
+  if(n >= 1000){
+    return (n / 1000).toFixed(1) + "K";
+  }
+
+  return String(n);
 }
 
 
-/* =========================
-   LOADING
-========================= */
-
-function setLoading(active){
-
-  $("scanBtn").disabled = active;
-
-  $("spinner").style.display =
-    active ? "inline-block" : "none";
-
-  $("btnIcon").style.display =
-    active ? "none" : "inline";
-
-  $("btnText").textContent =
-    active
-      ? "Scanning..."
-      : "Cari Preset & Video";
-
+function normalizeText(value){
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 
-/* =========================
-   PROGRESS
-========================= */
+function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-function setProgress(
-  pct,
-  stage,
-  title,
-  detail
-){
 
-  currentProgress = pct;
+/* =========================================================
+   PROGRESS UI
+========================================================= */
 
-  $("percent").textContent =
-    pct + "%";
+function setProgress(percent, title, status){
 
-  $("progressBar").style.width =
-    pct + "%";
+  $("progress").classList.add("show");
 
-  if(title){
-    $("progressTitle").textContent =
-      title;
-  }
+  const safePercent = Math.max(0, Math.min(100, percent));
 
-  if(detail){
-    $("progressDetail").textContent =
-      detail;
-  }
+  $("barFill").style.width = safePercent + "%";
+  $("progressPercent").textContent = safePercent + "%";
+  $("progressTitle").textContent = title;
+  $("statusText").textContent = status;
+}
+
+
+function activateStep(name){
 
   const steps = [
-    "stepVideo",
-    "stepComments",
-    "stepReplies",
-    "stepScan",
-    "stepDone"
+    "Video",
+    "Comments",
+    "Replies",
+    "Scan",
+    "Done"
   ];
 
-  steps.forEach(id => {
+  const index = steps.indexOf(name);
 
-    const el = $(id);
+  steps.forEach((step, i) => {
 
-    if(el){
-      el.classList.remove("active");
+    const el = $("step" + step);
+
+    if(!el) return;
+
+    el.classList.remove("active");
+
+    if(i < index){
+      el.classList.add("done");
+    }else{
+      el.classList.remove("done");
     }
 
   });
 
-  const map = {
-    video: "stepVideo",
-    comments: "stepComments",
-    replies: "stepReplies",
-    scan: "stepScan",
-    done: "stepDone"
-  };
+  const current = $("step" + name);
 
-  if(
-    map[stage] &&
-    $(map[stage])
-  ){
-
-    $(map[stage]).classList.add("active");
-
+  if(current){
+    current.classList.add("active");
   }
-
 }
 
 
-/* =========================
-   MAIN SCANNER
-========================= */
+/* =========================================================
+   ERROR
+========================================================= */
 
-async function startScan(){
+function showError(message){
 
-  const input = $("url");
+  const box = $("errorBox");
 
-  if(!input){
-
-    showError(
-      "Input TikTok tidak ditemukan."
-    );
-
-    return;
-  }
-
-  const url =
-    input.value.trim();
-
-  console.log(
-    "[Preset Hunter] URL:",
-    url
-  );
+  box.innerHTML = escapeHtml(message);
+  box.classList.add("show");
+}
 
 
-  if(!url){
-
-    showError(
-      "Tempel link TikTok terlebih dahulu."
-    );
-
-    return;
-  }
+function clearError(){
+  $("errorBox").classList.remove("show");
+  $("errorBox").textContent = "";
+}
 
 
-  if(
-    !url.includes("tiktok.com")
-  ){
+/* =========================================================
+   URL VALIDATION
+========================================================= */
 
-    showError(
-      "Link TikTok tidak valid."
-    );
-
-    return;
-  }
-
-
-  /*
-   * Pastikan config.js berhasil dimuat.
-   */
-
-  if(
-    typeof CONFIG === "undefined"
-  ){
-
-    showError(
-      "config.js tidak ditemukan."
-    );
-
-    console.error(
-      "CONFIG tidak ditemukan. Pastikan config.js berada di folder yang sama dengan index.html."
-    );
-
-    return;
-  }
-
-
-  if(
-    !CONFIG.RAPIDAPI_KEY ||
-    CONFIG.RAPIDAPI_KEY === "__RAPIDAPI_KEY__"
-  ){
-
-    showError(
-      "RapidAPI Key belum diisi."
-    );
-
-    return;
-  }
-
-
-  $("errorCard").style.display =
-    "none";
-
-  $("resultCard").style.display =
-    "none";
-
-  $("progressCard").style.display =
-    "block";
-
-  setLoading(true);
-
+function isTikTokUrl(url){
 
   try{
 
-    /*
-     * STEP 1
-     */
+    const parsed = new URL(url);
 
-    setProgress(
-      10,
-      "video",
-      "Mengambil data video",
-      "Menghubungi RapidAPI..."
+    const host = parsed.hostname
+      .toLowerCase()
+      .replace(/^www\./, "");
+
+    return (
+      host === "tiktok.com" ||
+      host.endsWith(".tiktok.com")
     );
 
-
-    const endpoint =
-      "https://" +
-      CONFIG.RAPIDAPI_HOST +
-      "/vid/index?url=" +
-      encodeURIComponent(url);
+  }catch{
+    return false;
+  }
+}
 
 
-    console.log(
-      "[Preset Hunter] API:",
-      endpoint
+/* =========================================================
+   RAPIDAPI
+========================================================= */
+
+async function fetchTikTokVideo(url){
+
+  if(
+    !window.CONFIG ||
+    !CONFIG.RAPIDAPI_KEY ||
+    CONFIG.RAPIDAPI_KEY.includes("PASTE_")
+  ){
+    throw new Error(
+      "RAPIDAPI_KEY belum diisi di config.js"
+    );
+  }
+
+  const endpoint =
+    "https://" +
+    CONFIG.RAPIDAPI_HOST +
+    "/vid/index?url=" +
+    encodeURIComponent(url);
+
+  const response = await fetch(endpoint, {
+
+    method: "GET",
+
+    headers: {
+      "X-RapidAPI-Key": CONFIG.RAPIDAPI_KEY,
+      "X-RapidAPI-Host": CONFIG.RAPIDAPI_HOST
+    }
+
+  });
+
+  if(!response.ok){
+
+    throw new Error(
+      "RapidAPI HTTP " +
+      response.status +
+      " - " +
+      response.statusText
     );
 
+  }
 
-    /*
-     * REQUEST RAPIDAPI
-     */
+  const json = await response.json();
 
-    const response =
-      await fetch(
-        endpoint,
-        {
-          method: "GET",
+  return json;
+}
 
-          headers: {
-            "X-RapidAPI-Key":
-              CONFIG.RAPIDAPI_KEY,
 
-            "X-RapidAPI-Host":
-              CONFIG.RAPIDAPI_HOST
-          }
-        }
+/* =========================================================
+   GENERIC VALUE FINDER
+========================================================= */
+
+function findFirstValue(obj, keys){
+
+  if(!obj || typeof obj !== "object"){
+    return null;
+  }
+
+  for(const key of keys){
+
+    if(
+      Object.prototype.hasOwnProperty.call(obj, key) &&
+      obj[key] !== null &&
+      obj[key] !== undefined &&
+      obj[key] !== ""
+    ){
+      return obj[key];
+    }
+
+  }
+
+  for(const key of Object.keys(obj)){
+
+    const value = obj[key];
+
+    if(value && typeof value === "object"){
+
+      const result = findFirstValue(
+        value,
+        keys
       );
 
-
-    const raw =
-      await response.text();
-
-
-    console.log(
-      "[Preset Hunter] HTTP:",
-      response.status
-    );
-
-    console.log(
-      "[Preset Hunter] Response:",
-      raw
-    );
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "RapidAPI HTTP " +
-        response.status
-      );
+      if(result !== null){
+        return result;
+      }
 
     }
 
+  }
 
-    let data;
+  return null;
+}
 
 
-    try{
+/* =========================================================
+   EXTRACT VIDEO DATA
+========================================================= */
 
-      data =
-        JSON.parse(raw);
+function extractVideoData(raw){
 
-    }catch(error){
+  const videoUrl = findFirstValue(raw, [
+    "play",
+    "play_addr",
+    "playUrl",
+    "video_url",
+    "videoUrl",
+    "wmplay",
+    "wm_play",
+    "download_url",
+    "downloadUrl"
+  ]);
 
-      throw new Error(
-        "Response RapidAPI bukan JSON."
+  const cover = findFirstValue(raw, [
+    "cover",
+    "origin_cover",
+    "dynamic_cover",
+    "thumbnail",
+    "thumbnail_url"
+  ]);
+
+  const authorName = findFirstValue(raw, [
+    "nickname",
+    "author_name",
+    "authorName",
+    "name"
+  ]);
+
+  const username = findFirstValue(raw, [
+    "unique_id",
+    "uniqueId",
+    "username",
+    "author_unique_id",
+    "authorUsername"
+  ]);
+
+  const caption = findFirstValue(raw, [
+    "title",
+    "desc",
+    "description",
+    "caption"
+  ]);
+
+  const likes = findFirstValue(raw, [
+    "digg_count",
+    "diggCount",
+    "likes",
+    "like_count"
+  ]);
+
+  const comments = findFirstValue(raw, [
+    "comment_count",
+    "commentCount",
+    "comments"
+  ]);
+
+  const shares = findFirstValue(raw, [
+    "share_count",
+    "shareCount",
+    "shares"
+  ]);
+
+  const views = findFirstValue(raw, [
+    "play_count",
+    "playCount",
+    "views",
+    "view_count"
+  ]);
+
+  return {
+    videoUrl: typeof videoUrl === "string"
+      ? videoUrl
+      : "",
+
+    cover: typeof cover === "string"
+      ? cover
+      : "",
+
+    authorName: typeof authorName === "string"
+      ? authorName
+      : "TikTok User",
+
+    username: typeof username === "string"
+      ? username
+      : "",
+
+    caption: typeof caption === "string"
+      ? caption
+      : "",
+
+    likes: Number(likes || 0),
+    comments: Number(comments || 0),
+    shares: Number(shares || 0),
+    views: Number(views || 0)
+  };
+}
+
+
+/* =========================================================
+   TIKWM REQUEST
+========================================================= */
+
+async function tikwmRequest(path, params){
+
+  const base =
+    (CONFIG.TIKWM_API ||
+      "https://www.tikwm.com/api")
+    .replace(/\/+$/, "");
+
+  const url = new URL(
+    base + "/" + path.replace(/^\/+/, "")
+  );
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if(
+      value !== undefined &&
+      value !== null
+    ){
+      url.searchParams.set(
+        key,
+        String(value)
       );
-
     }
 
+  });
 
-    /*
-     * STEP 2
-     */
+  const response = await fetch(url.toString(), {
+    method: "GET"
+  });
 
-    setProgress(
-      45,
-      "comments",
-      "Data video diterima",
-      "Menganalisis metadata..."
+  if(!response.ok){
+
+    throw new Error(
+      "TikWM HTTP " +
+      response.status +
+      " - " +
+      response.statusText
     );
-
-
-    /*
-     * VIDEO
-     */
-
-    const videoPlay =
-      findVideoUrl(data);
-
-
-    const videoHdPlay =
-      findHDVideoUrl(data) ||
-      videoPlay;
-
-
-    /*
-     * CREATOR
-     */
-
-    const authorNickname =
-      findAuthorNickname(data);
-
-
-    const authorUsername =
-      findAuthorUsername(data);
-
-
-    const authorAvatar =
-      findAuthorAvatar(data);
-
-
-    /*
-     * CAPTION
-     */
-
-    const caption =
-      findCaption(data);
-
-
-    /*
-     * COMMENT COUNT
-     */
-
-    const commentCount =
-      findCommentCount(data);
-
-
-    /*
-     * STEP 3
-     */
-
-    setProgress(
-      70,
-      "scan",
-      "Analisis Link Preset",
-      "Mencari link preset..."
-    );
-
-
-    /*
-     * SCAN SEMUA DATA YANG DIKEMBALIKAN API
-     */
-
-    const presets =
-      findPresetLinks(data);
-
-
-    /*
-     * SELESAI
-     */
-
-    setProgress(
-      100,
-      "done",
-      "Scan Selesai!",
-      presets.length +
-      " preset ditemukan"
-    );
-
-
-    setTimeout(
-      () => {
-
-        finishAndShowResult({
-
-          videoId:
-            findVideoId(data),
-
-          videoPlay:
-            videoPlay,
-
-          videoHdPlay:
-            videoHdPlay,
-
-          authorNickname:
-            authorNickname,
-
-          authorUsername:
-            authorUsername,
-
-          authorAvatar:
-            authorAvatar,
-
-          caption:
-            caption,
-
-          commentCount:
-            commentCount,
-
-          presets:
-            presets
-
-        });
-
-      },
-      400
-    );
-
-
-  }catch(error){
-
-    console.error(
-      "[Preset Hunter] ERROR:",
-      error
-    );
-
-
-    showError(
-      error.message ||
-      "Gagal mengambil data TikTok."
-    );
-
-
-  }finally{
-
-    setLoading(false);
 
   }
 
-}
-
-
-/* =========================
-   FIND VIDEO
-========================= */
-
-function findVideoUrl(data){
-
-  if(!data){
-    return "";
-  }
-
+  const json = await response.json();
 
   if(
-    Array.isArray(data.video) &&
-    data.video.length
+    json &&
+    typeof json === "object" &&
+    json.code !== undefined &&
+    Number(json.code) !== 0
   ){
-
-    return data.video[0] || "";
+    throw new Error(
+      "TikWM: " +
+      (json.msg || "request gagal")
+    );
   }
 
+  return json;
+}
 
-  if(
-    typeof data.video === "string"
-  ){
 
-    return data.video;
+/* =========================================================
+   EXTRACT ARRAY FROM API RESPONSE
+========================================================= */
+
+function getArrayFromResponse(json){
+
+  if(!json) return [];
+
+  const possible = [
+
+    json?.data?.comments,
+    json?.data?.comment,
+    json?.comments,
+    json?.data?.list,
+    json?.list
+
+  ];
+
+  for(const item of possible){
+
+    if(Array.isArray(item)){
+      return item;
+    }
+
   }
 
-
-  return (
-    data.play ||
-    data.playUrl ||
-    data.video_play ||
-    data.videoPlay ||
-    data.data?.play ||
-    data.data?.video ||
-    ""
-  );
-
+  return [];
 }
 
 
-function findHDVideoUrl(data){
+/* =========================================================
+   COMMENTS
+========================================================= */
 
-  if(!data){
-    return "";
-  }
-
-
-  if(
-    Array.isArray(data.video_hd) &&
-    data.video_hd.length
-  ){
-
-    return data.video_hd[0];
-  }
-
-
-  return (
-    data.video_hd ||
-    data.videoHd ||
-    data.hdplay ||
-    data.hdPlay ||
-    data.data?.video_hd ||
-    data.data?.hdplay ||
-    ""
-  );
-
-}
-
-
-/* =========================
-   FIND ID
-========================= */
-
-function findVideoId(data){
-
-  return (
-    data?.id ||
-    data?.video_id ||
-    data?.videoId ||
-    data?.data?.id ||
-    Date.now()
-  );
-
-}
-
-
-/* =========================
-   FIND AUTHOR
-========================= */
-
-function findAuthorNickname(data){
-
-  return (
-    data?.author?.nickname ||
-    data?.author?.name ||
-    data?.author?.nick_name ||
-    data?.nickname ||
-    data?.data?.author?.nickname ||
-    "TikTok User"
-  );
-
-}
-
-
-function findAuthorUsername(data){
-
-  const username =
-    data?.author?.unique_id ||
-    data?.author?.uniqueId ||
-    data?.author?.username ||
-    data?.unique_id ||
-    data?.username ||
-    data?.data?.author?.unique_id ||
-    "";
-
-  return username
-    ? "@" +
-      String(username)
-        .replace(/^@/, "")
-    : "";
-
-}
-
-
-function findAuthorAvatar(data){
-
-  return (
-    data?.author?.avatar ||
-    data?.author?.avatar_url ||
-    data?.author?.avatarUrl ||
-    data?.avatar ||
-    data?.avatar_url ||
-    data?.data?.author?.avatar ||
-    ""
-  );
-
-}
-
-
-/* =========================
-   FIND CAPTION
-========================= */
-
-function findCaption(data){
-
-  return (
-    data?.title ||
-    data?.desc ||
-    data?.description ||
-    data?.caption ||
-    data?.text ||
-    data?.data?.title ||
-    data?.data?.desc ||
-    data?.data?.description ||
-    ""
-  );
-
-}
-
-
-/* =========================
-   FIND COMMENT COUNT
-========================= */
-
-function findCommentCount(data){
-
-  return Number(
-    data?.comment_count ||
-    data?.commentCount ||
-    data?.comments_count ||
-    data?.statistics?.comment_count ||
-    data?.stats?.comment_count ||
-    data?.data?.comment_count ||
-    0
-  );
-
-}
-
-
-/* =========================
-   FIND PRESET LINKS
-========================= */
-
-function findPresetLinks(data){
+async function fetchComments(videoUrl){
 
   const results = [];
 
-  const seen = new Set();
+  let cursor = 0;
 
+  const maxComments =
+    Number(CONFIG.MAX_COMMENTS || 100);
 
-  function addLink(
-    link,
-    source,
-    user,
-    text
+  let page = 0;
+
+  while(
+    results.length < maxComments &&
+    page < 10
   ){
 
-    if(
-      !link ||
-      typeof link !== "string"
-    ){
+    page++;
 
-      return;
-    }
-
-
-    const clean =
-      link
-        .replace(
-          /[),.;!?]+$/g,
-          ""
-        );
-
-
-    const lower =
-      clean.toLowerCase();
-
-
-    /*
-     * Jangan masukkan link TikTok biasa.
-     */
-
-    if(
-      lower.includes(
-        "tiktok.com"
-      )
-    ){
-
-      return;
-    }
-
-
-    /*
-     * Pola link preset.
-     */
-
-    const isPreset =
-      lower.includes(
-        "alightmotion"
-      ) ||
-      lower.includes(
-        "alight-motion"
-      ) ||
-      lower.includes(
-        "alight motion"
-      ) ||
-      lower.includes(
-        "preset"
-      ) ||
-      lower.includes(
-        ".xml"
-      );
-
-
-    if(
-      !isPreset
-    ){
-
-      return;
-    }
-
-
-    if(
-      seen.has(clean)
-    ){
-
-      return;
-    }
-
-
-    seen.add(clean);
-
-
-    results.push({
-
-      source:
-        source || "SCANNER",
-
-      user:
-        user || "Pengguna",
-
-      text:
-        text || clean,
-
-      url:
-        clean
-
-    });
-
-  }
-
-
-  function scan(
-    value,
-    source = "METADATA",
-    user = "Scanner",
-    parentText = ""
-  ){
-
-    if(
-      value === null ||
-      value === undefined
-    ){
-
-      return;
-    }
-
-
-    /*
-     * STRING
-     */
-
-    if(
-      typeof value === "string"
-    ){
-
-      const matches =
-        value.match(
-          /https?:\/\/[^\s"'<>]+/gi
-        );
-
-
-      if(matches){
-
-        matches.forEach(
-          link => {
-
-            addLink(
-              link,
-              source,
-              user,
-              value
-            );
-
-          }
-        );
-
+    const json = await tikwmRequest(
+      "comment/list",
+      {
+        url: videoUrl,
+        count: Math.min(
+          50,
+          maxComments - results.length
+        ),
+        cursor
       }
+    );
 
-      return;
+    const comments =
+      getArrayFromResponse(json);
+
+    if(!comments.length){
+      break;
     }
 
+    results.push(...comments);
 
-    /*
-     * ARRAY
-     */
+    const data =
+      json?.data || json || {};
 
-    if(
-      Array.isArray(value)
-    ){
-
-      value.forEach(
-        item => {
-
-          scan(
-            item,
-            source,
-            user,
-            parentText
-          );
-
-        }
+    const hasMore =
+      Boolean(
+        data.hasMore ??
+        data.has_more ??
+        false
       );
 
-      return;
-    }
-
-
-    /*
-     * OBJECT
-     */
+    const nextCursor =
+      data.cursor;
 
     if(
-      typeof value === "object"
+      !hasMore ||
+      nextCursor === undefined ||
+      nextCursor === cursor
     ){
-
-      const possibleUser =
-        value?.user?.nickname ||
-        value?.user?.unique_id ||
-        value?.user?.uniqueId ||
-        value?.author?.nickname ||
-        value?.author?.unique_id ||
-        value?.nickname ||
-        value?.unique_id ||
-        user;
-
-
-      Object.entries(value)
-        .forEach(
-          ([key,val]) => {
-
-            const lowerKey =
-              key.toLowerCase();
-
-
-            let nextSource =
-              source;
-
-
-            if(
-              lowerKey.includes(
-                "comment"
-              )
-            ){
-
-              nextSource =
-                "COMMENTS";
-
-            }
-
-
-            if(
-              lowerKey.includes(
-                "reply"
-              )
-            ){
-
-              nextSource =
-                "REPLIES";
-
-            }
-
-
-            if(
-              lowerKey.includes(
-                "caption"
-              ) ||
-              lowerKey === "title" ||
-              lowerKey === "desc"
-            ){
-
-              nextSource =
-                "CAPTION";
-
-            }
-
-
-            const nextText =
-              typeof val === "string"
-                ? val
-                : parentText;
-
-
-            scan(
-              val,
-              nextSource,
-              possibleUser,
-              nextText
-            );
-
-          }
-        );
-
+      break;
     }
+
+    cursor = nextCursor;
+
+    setProgress(
+      Math.min(
+        55,
+        25 + Math.round(
+          results.length / maxComments * 30
+        )
+      ),
+      "COMMENTS",
+      `Mengambil komentar... ${results.length}`
+    );
 
   }
 
-
-  scan(data);
-
-
-  return results;
-
+  return results.slice(0, maxComments);
 }
 
 
-/* =========================
-   SHOW RESULT
-========================= */
+/* =========================================================
+   COMMENT ID
+========================================================= */
 
-function finishAndShowResult(data){
+function getCommentId(comment){
 
-  $("progressCard").style.display =
-    "none";
-
-  $("resultCard").style.display =
-    "block";
-
-
-  /*
-   * VIDEO
-   */
-
-  const video =
-    $("previewVideo");
+  return (
+    comment?.id ||
+    comment?.cid ||
+    comment?.comment_id ||
+    comment?.commentId ||
+    ""
+  );
+}
 
 
-  video.src =
-    data.videoPlay || "";
+/* =========================================================
+   REPLY COUNT
+========================================================= */
+
+function getReplyTotal(comment){
+
+  return Number(
+    comment?.reply_total ??
+    comment?.replyTotal ??
+    comment?.reply_comment_total ??
+    comment?.reply_count ??
+    comment?.replyCount ??
+    0
+  );
+}
 
 
-  const mediaScan =
-    $("mediaScan");
+/* =========================================================
+   REPLIES
+========================================================= */
+
+async function fetchRepliesForComment(comment){
+
+  const commentId =
+    getCommentId(comment);
+
+  if(!commentId){
+    return [];
+  }
+
+  const total =
+    getReplyTotal(comment);
+
+  if(total <= 0){
+    return [];
+  }
+
+  const results = [];
+
+  let cursor = 0;
+  let page = 0;
+
+  const maxReplies =
+    Number(
+      CONFIG.MAX_REPLIES_PER_COMMENT || 50
+    );
+
+  while(
+    results.length < maxReplies &&
+    page < 5
+  ){
+
+    page++;
+
+    const json = await tikwmRequest(
+      "comment/reply",
+      {
+        comment_id: commentId,
+        count: Math.min(
+          50,
+          maxReplies - results.length
+        ),
+        cursor
+      }
+    );
+
+    const replies =
+      getArrayFromResponse(json);
+
+    if(!replies.length){
+      break;
+    }
+
+    results.push(...replies);
+
+    const data =
+      json?.data || json || {};
+
+    const hasMore =
+      Boolean(
+        data.hasMore ??
+        data.has_more ??
+        false
+      );
+
+    const nextCursor =
+      data.cursor;
+
+    if(
+      !hasMore ||
+      nextCursor === undefined ||
+      nextCursor === cursor
+    ){
+      break;
+    }
+
+    cursor = nextCursor;
+
+  }
+
+  return results.slice(0, maxReplies);
+}
 
 
-  mediaScan.style.display =
-    data.videoPlay
-      ? "block"
-      : "none";
+async function fetchAllReplies(comments){
 
+  const allReplies = [];
 
-  /*
-   * DOWNLOAD
-   */
+  let processed = 0;
 
-  const downloadBtn =
-    $("downloadVideoBtn");
+  for(const comment of comments){
 
+    processed++;
 
-  const downloadUrl =
-    data.videoHdPlay ||
-    data.videoPlay ||
-    "";
+    const total =
+      getReplyTotal(comment);
 
+    setProgress(
+      55 + Math.round(
+        processed /
+        Math.max(comments.length, 1) *
+        20
+      ),
+      "REPLIES",
+      `Mencari replies ${processed}/${comments.length} • ${total} reply`
+    );
 
-  if(downloadUrl){
+    if(total <= 0){
+      continue;
+    }
 
-    downloadBtn.href =
-      downloadUrl;
+    try{
 
-    downloadBtn.target =
-      "_blank";
-
-    downloadBtn.rel =
-      "noopener";
-
-    downloadBtn.onclick =
-      null;
-
-  }else{
-
-    downloadBtn.href =
-      "#";
-
-    downloadBtn.onclick =
-      function(e){
-
-        e.preventDefault();
-
-        showError(
-          "URL video tidak tersedia dari API."
+      const replies =
+        await fetchRepliesForComment(
+          comment
         );
 
-      };
+      replies.forEach(reply => {
+
+        allReplies.push({
+          ...reply,
+          parentCommentId:
+            getCommentId(comment)
+        });
+
+      });
+
+    }catch(error){
+
+      console.warn(
+        "Reply gagal:",
+        error
+      );
+
+      /*
+       * Jangan hentikan seluruh scan hanya
+       * karena satu komentar gagal.
+       */
+
+    }
+
+    /*
+     * Beri sedikit jeda supaya request tidak
+     * ditembak sekaligus.
+     */
+    await sleep(80);
+  }
+
+  return allReplies;
+}
+
+
+/* =========================================================
+   EXTRACT COMMENT TEXT
+========================================================= */
+
+function getCommentText(comment){
+
+  return normalizeText(
+    comment?.text ||
+    comment?.content ||
+    comment?.desc ||
+    ""
+  );
+}
+
+
+/* =========================================================
+   SCAN STRING RECURSIVELY
+========================================================= */
+
+function collectStrings(value, output, depth = 0){
+
+  if(depth > 8){
+    return;
+  }
+
+  if(typeof value === "string"){
+
+    const text = value.trim();
+
+    if(text){
+      output.push(text);
+    }
+
+    return;
+  }
+
+  if(Array.isArray(value)){
+
+    for(const item of value){
+      collectStrings(
+        item,
+        output,
+        depth + 1
+      );
+    }
+
+    return;
+  }
+
+  if(value && typeof value === "object"){
+
+    for(const key of Object.keys(value)){
+
+      collectStrings(
+        value[key],
+        output,
+        depth + 1
+      );
+
+    }
+
+  }
+}
+
+
+/* =========================================================
+   URL EXTRACTION
+========================================================= */
+
+function extractUrls(text){
+
+  if(!text){
+    return [];
+  }
+
+  const matches =
+    text.match(
+      /https?:\/\/[^\s<>"'`]+/gi
+    ) || [];
+
+  return matches.map(url => {
+
+    return url
+      .replace(/[),.!?;:'"\]}]+$/g, "");
+
+  });
+}
+
+
+/* =========================================================
+   PRESET DETECTOR
+========================================================= */
+
+function looksLikePresetUrl(url){
+
+  const lower =
+    url.toLowerCase();
+
+  const keywords = [
+
+    "alightmotion",
+    "alight-motion",
+    "alight motion",
+    "alightmotion.com",
+    "preset",
+    "xml",
+    "amshare",
+    "am-preset",
+    "alight.link"
+
+  ];
+
+  return keywords.some(
+    keyword =>
+      lower.includes(keyword)
+  );
+}
+
+
+/* =========================================================
+   SCAN PRESETS
+========================================================= */
+
+function findPresetLinks(videoRaw, videoData, comments, replies){
+
+  const found = [];
+
+  const seen = new Set();
+
+  function addFromText(
+    text,
+    source
+  ){
+
+    const urls =
+      extractUrls(text);
+
+    for(const url of urls){
+
+      if(!looksLikePresetUrl(url)){
+        continue;
+      }
+
+      if(
+        url.includes("tiktok.com")
+      ){
+        continue;
+      }
+
+      const normalized =
+        url.replace(
+          /[?#].*$/,
+          ""
+        );
+
+      const key =
+        normalized.toLowerCase();
+
+      if(seen.has(key)){
+        continue;
+      }
+
+      seen.add(key);
+
+      found.push({
+        url,
+        source
+      });
+
+    }
 
   }
 
 
   /*
-   * AVATAR
+   * Scan seluruh response video
    */
+  const rawStrings = [];
 
-  const avatar =
-    $("authorAvatar");
+  collectStrings(
+    videoRaw,
+    rawStrings
+  );
+
+  rawStrings.forEach(text => {
+
+    addFromText(
+      text,
+      "Video metadata"
+    );
+
+  });
 
 
-  if(data.authorAvatar){
+  /*
+   * Caption
+   */
+  addFromText(
+    videoData.caption,
+    "Caption"
+  );
 
-    avatar.src =
-      data.authorAvatar;
 
-    avatar.style.display =
-      "block";
+  /*
+   * Comments
+   */
+  comments.forEach((comment, index) => {
+
+    const text =
+      getCommentText(comment);
+
+    addFromText(
+      text,
+      `Comment #${index + 1}`
+    );
+
+  });
+
+
+  /*
+   * Replies
+   */
+  replies.forEach((reply, index) => {
+
+    const text =
+      getCommentText(reply);
+
+    addFromText(
+      text,
+      `Reply #${index + 1}`
+    );
+
+  });
+
+
+  return found;
+}
+
+
+/* =========================================================
+   RENDER VIDEO
+========================================================= */
+
+function renderVideo(data){
+
+  $("authorName").textContent =
+    data.authorName || "TikTok User";
+
+  $("authorUsername").textContent =
+    data.username
+      ? "@" + data.username.replace(/^@/, "")
+      : "@unknown";
+
+  $("caption").textContent =
+    data.caption || "(tanpa caption)";
+
+  $("statLikes").textContent =
+    "❤️ " + formatNumber(data.likes);
+
+  $("statComments").textContent =
+    "💬 " + formatNumber(data.comments);
+
+  $("statShares").textContent =
+    "↗️ " + formatNumber(data.shares);
+
+  $("statViews").textContent =
+    "👁️ " + formatNumber(data.views);
+
+
+  const video =
+    $("videoPlayer");
+
+  if(data.videoUrl){
+
+    video.src = data.videoUrl;
 
   }else{
 
-    avatar.removeAttribute(
-      "src"
-    );
+    video.removeAttribute("src");
 
-    avatar.style.display =
+  }
+
+
+  const download =
+    $("downloadVideo");
+
+  if(data.videoUrl){
+
+    download.href =
+      data.videoUrl;
+
+    download.style.display =
+      "inline-block";
+
+  }else{
+
+    download.style.display =
       "none";
 
   }
 
-
-  /*
-   * AUTHOR
-   */
-
-  $("authorNickname").textContent =
-    data.authorNickname ||
-    "TikTok User";
-
-
-  $("authorUsername").textContent =
-    data.authorUsername ||
-    "";
-
-
-  /*
-   * CAPTION
-   */
-
-  $("captionText").textContent =
-    "Caption: " +
-    (
-      data.caption ||
-      "Tidak ada caption"
-    );
-
-
-  /*
-   * PRESETS
-   */
-
-  const presets =
-    Array.isArray(data.presets)
-      ? data.presets
-      : [];
-
-
-  $("presetCount").textContent =
-    presets.length;
-
-
-  $("statPresets").textContent =
-    presets.length;
-
-
-  $("statComments").textContent =
-    Number(
-      data.commentCount || 0
-    );
-
-
-  $("statLinks").textContent =
-    presets.length;
-
-
-  renderPresets(
-    presets
-  );
-
 }
 
 
-/* =========================
+/* =========================================================
    RENDER PRESETS
-========================= */
+========================================================= */
 
 function renderPresets(presets){
 
-  const container =
+  const list =
     $("presetList");
 
-
-  container.innerHTML =
-    "";
-
+  $("presetCount").textContent =
+    presets.length + " LINK";
 
   if(!presets.length){
 
-    container.innerHTML = `
+    list.innerHTML = `
       <div class="empty">
-        <span class="emptyIcon">⌕</span>
-        Tidak ditemukan link preset pada
-        data yang berhasil dipindai.
+        Tidak ditemukan link preset dari
+        caption, komentar, reply, atau metadata.
       </div>
     `;
 
@@ -1647,310 +1645,399 @@ function renderPresets(presets){
   }
 
 
-  presets.forEach(
-    (preset,index) => {
+  list.innerHTML =
+    presets.map((preset, index) => {
 
-      const item =
-        document.createElement(
-          "div"
+      return `
+        <div class="preset">
+
+          <div class="preset-top">
+
+            <div class="preset-number">
+              ${index + 1}
+            </div>
+
+            <div class="preset-body">
+
+              <div class="preset-name">
+                Preset / Alight Motion Link
+              </div>
+
+              <div class="preset-source">
+                Sumber: ${escapeHtml(
+                  preset.source
+                )}
+              </div>
+
+              <div class="preset-url">
+                ${escapeHtml(
+                  preset.url
+                )}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="preset-actions">
+
+            <button
+              class="action open"
+              onclick='openPreset(${JSON.stringify(
+                preset.url
+              )})'
+            >
+              BUKA PRESET
+            </button>
+
+            <button
+              class="action"
+              onclick='copyPreset(${JSON.stringify(
+                preset.url
+              )})'
+            >
+              COPY LINK
+            </button>
+
+          </div>
+
+        </div>
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================================================
+   OPEN / COPY
+========================================================= */
+
+function openPreset(url){
+
+  window.open(
+    url,
+    "_blank",
+    "noopener"
+  );
+
+}
+
+
+async function copyPreset(url){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      url
+    );
+
+    alert("Link preset berhasil dicopy.");
+
+  }catch{
+
+    /*
+     * Fallback untuk browser lama
+     */
+    const textarea =
+      document.createElement("textarea");
+
+    textarea.value = url;
+
+    document.body.appendChild(
+      textarea
+    );
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    alert("Link preset berhasil dicopy.");
+
+  }
+
+}
+
+
+/* =========================================================
+   DEBUG
+========================================================= */
+
+function showDebug(data){
+
+  const box =
+    $("debugBox");
+
+  box.textContent =
+    typeof data === "string"
+      ? data
+      : JSON.stringify(
+          data,
+          null,
+          2
         );
 
+  box.classList.add("show");
+}
 
-      item.className =
-        "preset";
+
+/* =========================================================
+   MAIN SCANNER
+========================================================= */
+
+async function startScan(){
+
+  clearError();
+
+  $("result").classList.remove("show");
+  $("debugBox").classList.remove("show");
+
+  state.comments = [];
+  state.replies = [];
+  state.allTexts = [];
+  state.presets = [];
+  state.videoData = null;
 
 
-      item.style.animationDelay =
-        (index * 45) +
-        "ms";
+  const url =
+    $("tiktokUrl").value.trim();
 
+
+  if(!url){
+
+    showError(
+      "Masukkan link TikTok terlebih dahulu."
+    );
+
+    return;
+  }
+
+
+  if(!isTikTokUrl(url)){
+
+    showError(
+      "Link tidak terlihat seperti URL TikTok yang valid."
+    );
+
+    return;
+  }
+
+
+  const button =
+    $("scanButton");
+
+  button.disabled = true;
+  button.textContent =
+    "SCANNING...";
+
+
+  try{
+
+    state.originalUrl = url;
+
+
+    /* -----------------------------------------
+       STEP 1 — VIDEO
+    ----------------------------------------- */
+
+    activateStep("Video");
+
+    setProgress(
+      8,
+      "VIDEO",
+      "Mengambil data video TikTok..."
+    );
+
+    const rawVideo =
+      await fetchTikTokVideo(url);
+
+    const videoData =
+      extractVideoData(rawVideo);
+
+    state.videoData =
+      videoData;
+
+
+    renderVideo(
+      videoData
+    );
+
+
+    /* -----------------------------------------
+       STEP 2 — COMMENTS
+    ----------------------------------------- */
+
+    activateStep("Comments");
+
+    setProgress(
+      28,
+      "COMMENTS",
+      "Mengambil komentar TikTok..."
+    );
+
+
+    /*
+     * TikWM biasanya menerima URL video
+     * pada endpoint comment/list.
+     */
+    let comments = [];
+
+    try{
+
+      comments =
+        await fetchComments(url);
+
+    }catch(error){
+
+      console.warn(
+        "Comment API gagal:",
+        error
+      );
 
       /*
-       * TOP
+       * Tetap lanjut ke scan caption /
+       * metadata supaya video tetap tampil.
        */
 
-      const top =
-        document.createElement(
-          "div"
-        );
-
-
-      top.className =
-        "presetTop";
-
-
-      const source =
-        document.createElement(
-          "span"
-        );
-
-
-      source.className =
-        "source";
-
-
-      source.textContent =
-        "✓ " +
-        (
-          preset.source ||
-          "SCANNER"
-        );
-
-
-      const user =
-        document.createElement(
-          "span"
-        );
-
-
-      user.className =
-        "presetUser";
-
-
-      user.textContent =
-        preset.user ||
-        "Pengguna";
-
-
-      top.appendChild(
-        source
-      );
-
-
-      top.appendChild(
-        user
-      );
-
-
-      /*
-       * TEXT
-       */
-
-      const text =
-        document.createElement(
-          "div"
-        );
-
-
-      text.className =
-        "presetText";
-
-
-      text.textContent =
-        '"' +
-        (
-          preset.text ||
-          ""
-        ) +
-        '"';
-
-
-      /*
-       * URL
-       */
-
-      const url =
-        document.createElement(
-          "div"
-        );
-
-
-      url.className =
-        "presetUrl";
-
-
-      url.textContent =
-        preset.url ||
-        "";
-
-
-      /*
-       * ACTIONS
-       */
-
-      const actions =
-        document.createElement(
-          "div"
-        );
-
-
-      actions.className =
-        "actions";
-
-
-      /*
-       * OPEN
-       */
-
-      const open =
-        document.createElement(
-          "button"
-        );
-
-
-      open.className =
-        "action open";
-
-
-      open.textContent =
-        "BUKA PRESET";
-
-
-      open.onclick =
-        function(){
-
-          if(
-            preset.url
-          ){
-
-            window.open(
-              preset.url,
-              "_blank",
-              "noopener"
-            );
-
-          }
-
-        };
-
-
-      /*
-       * COPY
-       */
-
-      const copy =
-        document.createElement(
-          "button"
-        );
-
-
-      copy.className =
-        "action copy";
-
-
-      copy.textContent =
-        "COPY LINK";
-
-
-      copy.onclick =
-        async function(){
-
-          try{
-
-            await navigator.clipboard.writeText(
-              preset.url
-            );
-
-
-            copy.textContent =
-              "COPIED ✓";
-
-
-            setTimeout(
-              () => {
-
-                copy.textContent =
-                  "COPY LINK";
-
-              },
-              1500
-            );
-
-
-          }catch(error){
-
-            showError(
-              "Gagal menyalin link."
-            );
-
-          }
-
-        };
-
-
-      actions.appendChild(
-        open
-      );
-
-
-      actions.appendChild(
-        copy
-      );
-
-
-      item.appendChild(
-        top
-      );
-
-
-      item.appendChild(
-        text
-      );
-
-
-      item.appendChild(
-        url
-      );
-
-
-      item.appendChild(
-        actions
-      );
-
-
-      container.appendChild(
-        item
-      );
+      $("commentsInfo").textContent =
+        "Komentar tidak dapat diambil: " +
+        error.message;
 
     }
-  );
+
+    state.comments =
+      comments;
+
+
+    /* -----------------------------------------
+       STEP 3 — REPLIES
+    ----------------------------------------- */
+
+    activateStep("Replies");
+
+    let replies = [];
+
+    if(comments.length){
+
+      replies =
+        await fetchAllReplies(
+          comments
+        );
+
+    }
+
+    state.replies =
+      replies;
+
+
+    /* -----------------------------------------
+       STEP 4 — SCAN
+    ----------------------------------------- */
+
+    activateStep("Scan");
+
+    setProgress(
+      80,
+      "SCAN",
+      "Memindai caption, komentar, replies, dan metadata..."
+    );
+
+
+    const presets =
+      findPresetLinks(
+        rawVideo,
+        videoData,
+        comments,
+        replies
+      );
+
+    state.presets =
+      presets;
+
+
+    /* -----------------------------------------
+       RENDER
+    ----------------------------------------- */
+
+    renderPresets(
+      presets
+    );
+
+
+    $("commentsInfo").innerHTML =
+      `
+      Video berhasil diambil.<br>
+      Komentar dipindai:
+      <b>${comments.length}</b><br>
+      Replies dipindai:
+      <b>${replies.length}</b><br>
+      Link preset ditemukan:
+      <b>${presets.length}</b>
+      `;
+
+
+    /* -----------------------------------------
+       DONE
+    ----------------------------------------- */
+
+    activateStep("Done");
+
+    setProgress(
+      100,
+      "DONE",
+      "Scanning selesai."
+    );
+
+
+    $("result").classList.add(
+      "show"
+    );
+
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+    showError(
+      "Scanner gagal: " +
+      error.message
+    );
+
+    setProgress(
+      0,
+      "ERROR",
+      "Scanning gagal."
+    );
+
+
+  }finally{
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "SCAN";
+
+  }
 
 }
 
 
-/* =========================
-   ERROR
-========================= */
-
-function showError(message){
-
-  $("progressCard").style.display =
-    "none";
-
-  $("resultCard").style.display =
-    "none";
-
-
-  setLoading(false);
-
-
-  $("errorText").textContent =
-    message;
-
-
-  $("errorCard").style.display =
-    "block";
-
-
-  console.error(
-    "[Preset Hunter]",
-    message
-  );
-
-}
-
-
-/* =========================
+/* =========================================================
    ENTER KEY
-========================= */
+========================================================= */
 
-$("url").addEventListener(
+$("tiktokUrl").addEventListener(
   "keydown",
-  function(e){
+  event => {
 
-    if(
-      e.key === "Enter"
-    ){
+    if(event.key === "Enter"){
+
+      event.preventDefault();
 
       startScan();
 
@@ -1958,6 +2045,7 @@ $("url").addEventListener(
 
   }
 );
+
 </script>
 
 </body>
