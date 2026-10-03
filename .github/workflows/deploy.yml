@@ -17,30 +17,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Inject RapidAPI Key
-        env:
-          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+      - name: Check Required Files
         run: |
-          python3 - <<'PY'
-          import os
-          from pathlib import Path
-          p = Path("config.js")
-          text = p.read_text(encoding="utf-8")
-          key = os.environ["RAPIDAPI_KEY"]
-          if not key:
-              raise SystemExit("Missing repository secret RAPIDAPI_KEY")
-          p.write_text(text.replace("__RAPIDAPI_KEY__", key), encoding="utf-8")
-          PY
+          test -f index.html || exit 1
+          test -f config.js || exit 1
+          echo "index.html OK"
+          echo "config.js OK"
 
       - name: Prepare Pages
         run: |
+          rm -rf public
           mkdir -p public
+
           cp index.html public/index.html
           cp config.js public/config.js
+
           touch public/.nojekyll
+
+          echo "Files prepared:"
+          ls -la public
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
