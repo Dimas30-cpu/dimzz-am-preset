@@ -1,0 +1,3832 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Preset Hunter</title>
+
+  <meta
+    name="description"
+    content="Scan video TikTok untuk menemukan link preset Alight Motion."
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #07080d;
+      --panel: rgba(20, 22, 31, 0.78);
+      --panel2: rgba(28, 31, 43, 0.72);
+      --border: rgba(255,255,255,0.10);
+      --text: #f5f7ff;
+      --muted: #969bad;
+      --accent: #8b5cf6;
+      --accent2: #a855f7;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(139,92,246,.20),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 85% 20%,
+          rgba(168,85,247,.13),
+          transparent 30%
+        ),
+        linear-gradient(
+          135deg,
+          #05060a,
+          #0a0b12 50%,
+          #05060a
+        );
+
+      padding: 20px;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(960px, 100%);
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 38px 15px 25px;
+    }
+
+    .logo {
+      width: 74px;
+      height: 74px;
+
+      margin: 0 auto 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(139,92,246,.95),
+          rgba(168,85,247,.65)
+        );
+
+      box-shadow:
+        0 15px 45px rgba(139,92,246,.35);
+
+      font-size: 35px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 6vw, 52px);
+      font-weight: 900;
+      letter-spacing: -1.8px;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .card {
+      background: var(--panel);
+
+      border: 1px solid var(--border);
+      border-radius: 24px;
+
+      padding: 22px;
+
+      box-shadow: var(--shadow);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .input-label {
+      display: block;
+
+      margin-bottom: 10px;
+
+      color: #d7d9e4;
+
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .input-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    input[type="url"] {
+      width: 100%;
+      height: 54px;
+
+      padding: 0 16px;
+
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 15px;
+
+      outline: none;
+
+      color: white;
+      background: rgba(0,0,0,.28);
+
+      transition: .2s;
+    }
+
+    input[type="url"]:focus {
+      border-color: rgba(139,92,246,.7);
+
+      box-shadow:
+        0 0 0 4px rgba(139,92,246,.10);
+    }
+
+    input::placeholder {
+      color: #656979;
+    }
+
+    .scan-btn {
+      height: 54px;
+
+      padding: 0 24px;
+
+      border: 0;
+      border-radius: 15px;
+
+      color: white;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent),
+          var(--accent2)
+        );
+
+      box-shadow:
+        0 10px 30px rgba(139,92,246,.25);
+
+      transition: .2s;
+    }
+
+    .scan-btn:hover {
+      transform: translateY(-1px);
+
+      box-shadow:
+        0 14px 35px rgba(139,92,246,.34);
+    }
+
+    .scan-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .error {
+      display: none;
+
+      margin-top: 15px;
+      padding: 14px 16px;
+
+      border:
+        1px solid rgba(239,68,68,.25);
+
+      border-radius: 14px;
+
+      color: #fecaca;
+
+      background:
+        rgba(239,68,68,.10);
+
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    .progress-card {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .progress-card.show {
+      display: block;
+    }
+
+    .progress-title {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 20px;
+    }
+
+    .progress-title strong {
+      font-size: 15px;
+    }
+
+    .progress-percent {
+      color: #bca7ff;
+      font-weight: 800;
+    }
+
+    .progress-line {
+      width: 100%;
+      height: 7px;
+
+      overflow: hidden;
+
+      border-radius: 99px;
+
+      background:
+        rgba(255,255,255,.07);
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+
+      border-radius: inherit;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--accent),
+          #c084fc
+        );
+
+      transition:
+        width .35s ease;
+    }
+
+    .steps {
+      display: grid;
+
+      grid-template-columns:
+        repeat(5, 1fr);
+
+      gap: 8px;
+
+      margin-top: 22px;
+    }
+
+    .step {
+      text-align: center;
+
+      color: #646877;
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step-icon {
+      width: 34px;
+      height: 34px;
+
+      margin: 0 auto 7px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.06);
+
+      font-size: 13px;
+    }
+
+    .step.active {
+      color: #c4b5fd;
+    }
+
+    .step.active .step-icon {
+      background:
+        rgba(139,92,246,.22);
+
+      color: #c4b5fd;
+
+      box-shadow:
+        0 0 0 5px rgba(139,92,246,.07);
+    }
+
+    .step.done {
+      color: #86efac;
+    }
+
+    .step.done .step-icon {
+      background:
+        rgba(34,197,94,.16);
+
+      color: #86efac;
+    }
+
+    .result {
+      display: none;
+      margin-top: 18px;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .video-section {
+      display: grid;
+
+      grid-template-columns:
+        220px 1fr;
+
+      gap: 20px;
+    }
+
+    .video-box {
+      position: relative;
+
+      min-height: 300px;
+
+      overflow: hidden;
+
+      border-radius: 18px;
+
+      background: #000;
+    }
+
+    .video-box video {
+      width: 100%;
+      height: 100%;
+
+      min-height: 300px;
+
+      display: block;
+
+      object-fit: cover;
+    }
+
+    .video-cover {
+      width: 100%;
+      height: 100%;
+
+      min-height: 300px;
+
+      object-fit: cover;
+
+      display: block;
+    }
+
+    .video-info {
+      display: flex;
+
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .creator {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      margin-bottom: 15px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+
+      background:
+        linear-gradient(
+          135deg,
+          #8b5cf6,
+          #ec4899
+        );
+    }
+
+    .creator-name {
+      font-weight: 800;
+    }
+
+    .creator-username {
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .caption {
+      color: #d7d9e4;
+
+      line-height: 1.55;
+
+      white-space: pre-wrap;
+
+      word-break: break-word;
+    }
+
+    .stats {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 16px;
+    }
+
+    .stat {
+      padding: 7px 10px;
+
+      border:
+        1px solid rgba(255,255,255,.07);
+
+      border-radius: 10px;
+
+      color: #aeb2c1;
+
+      background:
+        rgba(255,255,255,.035);
+
+      font-size: 11px;
+    }
+
+    .download-btn {
+      display: inline-flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: max-content;
+
+      margin-top: 18px;
+
+      padding: 11px 16px;
+
+      border-radius: 12px;
+
+      color: white;
+
+      background:
+        rgba(255,255,255,.08);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .download-btn:hover {
+      background:
+        rgba(255,255,255,.13);
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-header {
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .preset-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .preset {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 14px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      border-radius: 15px;
+
+      background:
+        rgba(255,255,255,.035);
+    }
+
+    .preset-icon {
+      width: 42px;
+      height: 42px;
+
+      flex: 0 0 42px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      color: #ddd6fe;
+
+      background:
+        rgba(139,92,246,.14);
+
+      font-size: 18px;
+    }
+
+    .preset-content {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .preset-name {
+      font-weight: 800;
+      font-size: 13px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    .preset-url {
+      margin-top: 4px;
+
+      color: #777b8b;
+
+      font-size: 11px;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+    }
+
+    .preset-source {
+      margin-top: 4px;
+
+      color: #666a78;
+
+      font-size: 10px;
+    }
+
+    .preset-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .small-btn {
+      padding: 9px 11px;
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
+      border-radius: 10px;
+
+      color: #ddd;
+
+      background:
+        rgba(255,255,255,.05);
+
+      cursor: pointer;
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .small-btn:hover {
+      background:
+        rgba(255,255,255,.10);
+    }
+
+    .empty {
+      padding: 25px;
+
+      text-align: center;
+
+      border:
+        1px dashed rgba(255,255,255,.10);
+
+      border-radius: 15px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+    .scan-info {
+      margin-top: 14px;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+
+      color: #8f93a3;
+
+      background:
+        rgba(255,255,255,.025);
+
+      font-size: 11px;
+
+      line-height: 1.5;
+    }
+
+    .footer {
+      padding: 30px 10px 15px;
+
+      text-align: center;
+
+      color: #565a68;
+
+      font-size: 11px;
+    }
+
+    .toast {
+      position: fixed;
+
+      left: 50%;
+      bottom: 25px;
+
+      transform:
+        translate(-50%, 20px);
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      padding: 11px 16px;
+
+      border-radius: 12px;
+
+      color: white;
+
+      background: #1b1d27;
+
+      border:
+        1px solid rgba(255,255,255,.10);
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.4);
+
+      font-size: 12px;
+      font-weight: 700;
+
+      transition: .25s;
+
+      z-index: 999;
+    }
+
+    .toast.show {
+      opacity: 1;
+
+      transform:
+        translate(-50%, 0);
+    }
+
+    .debug-box {
+      margin-top: 12px;
+
+      padding: 12px;
+
+      border-radius: 12px;
+
+      color: #747887;
+
+      background:
+        rgba(0,0,0,.18);
+
+      font-size: 10px;
+
+      line-height: 1.5;
+
+      word-break: break-word;
+    }
+
+    @media (max-width: 700px) {
+
+      body {
+        padding: 12px;
+      }
+
+      .hero {
+        padding-top: 25px;
+      }
+
+      .input-row {
+        flex-direction: column;
+      }
+
+      .scan-btn {
+        width: 100%;
+      }
+
+      .steps {
+        grid-template-columns:
+          repeat(5, 1fr);
+      }
+
+      .step {
+        font-size: 9px;
+      }
+
+      .step-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .video-section {
+        grid-template-columns: 1fr;
+      }
+
+      .video-box {
+        min-height: 420px;
+      }
+
+      .video-box video,
+      .video-cover {
+        min-height: 420px;
+      }
+
+      .preset {
+        align-items: flex-start;
+      }
+
+      .preset-actions {
+        flex-direction: column;
+      }
+
+      .small-btn {
+        white-space: nowrap;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+  <!-- ==========================================================
+       HEADER
+       ========================================================== -->
+
+  <header class="hero">
+
+    <div class="logo">
+      ⚡
+    </div>
+
+    <h1>
+      Preset Hunter
+    </h1>
+
+    <p class="subtitle">
+      Cari preset Alight Motion dari video TikTok
+    </p>
+
+  </header>
+
+
+  <main>
+
+
+    <!-- ========================================================
+         INPUT
+         ======================================================== -->
+
+    <section class="card">
+
+      <label
+        class="input-label"
+        for="tiktokUrl"
+      >
+        LINK VIDEO TIKTOK
+      </label>
+
+
+      <div class="input-row">
+
+        <div class="input-wrap">
+
+          <input
+            id="tiktokUrl"
+            type="url"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="https://www.tiktok.com/@user/video/..."
+          >
+
+        </div>
+
+
+        <button
+          id="scanButton"
+          class="scan-btn"
+          type="button"
+        >
+          🔎 SCAN
+        </button>
+
+      </div>
+
+
+      <div
+        id="errorBox"
+        class="error"
+      ></div>
+
+    </section>
+
+
+    <!-- ========================================================
+         PROGRESS
+         ======================================================== -->
+
+    <section
+      id="progressCard"
+      class="card progress-card"
+    >
+
+      <div class="progress-title">
+
+        <strong
+          id="progressText"
+        >
+          Mempersiapkan scanner...
+        </strong>
+
+        <span
+          id="progressPercent"
+          class="progress-percent"
+        >
+          0%
+        </span>
+
+      </div>
+
+
+      <div class="progress-line">
+
+        <div
+          id="progressFill"
+          class="progress-fill"
+        ></div>
+
+      </div>
+
+
+      <div class="steps">
+
+
+        <div
+          id="stepVideo"
+          class="step"
+        >
+
+          <div class="step-icon">
+            ▶
+          </div>
+
+          VIDEO
+
+        </div>
+
+
+        <div
+          id="stepComments"
+          class="step"
+        >
+
+          <div class="step-icon">
+            💬
+          </div>
+
+          COMMENTS
+
+        </div>
+
+
+        <div
+          id="stepReplies"
+          class="step"
+        >
+
+          <div class="step-icon">
+            ↩
+          </div>
+
+          REPLIES
+
+        </div>
+
+
+        <div
+          id="stepScan"
+          class="step"
+        >
+
+          <div class="step-icon">
+            🔍
+          </div>
+
+          SCAN
+
+        </div>
+
+
+        <div
+          id="stepDone"
+          class="step"
+        >
+
+          <div class="step-icon">
+            ✓
+          </div>
+
+          DONE
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         RESULT
+         ======================================================== -->
+
+    <section
+      id="result"
+      class="result"
+    >
+
+
+      <!-- ======================================================
+           VIDEO
+           ====================================================== -->
+
+      <div class="card">
+
+        <div class="video-section">
+
+
+          <div
+            id="videoBox"
+            class="video-box"
+          ></div>
+
+
+          <div class="video-info">
+
+
+            <div class="creator">
+
+              <img
+                id="avatar"
+                class="avatar"
+                alt="Avatar"
+                src=""
+              >
+
+
+              <div>
+
+                <div
+                  id="creatorName"
+                  class="creator-name"
+                >
+                  -
+                </div>
+
+
+                <div
+                  id="creatorUsername"
+                  class="creator-username"
+                >
+                  -
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="caption"
+              class="caption"
+            ></div>
+
+
+            <div
+              id="stats"
+              class="stats"
+            ></div>
+
+
+            <a
+              id="downloadButton"
+              class="download-btn"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              ⬇ BUKA VIDEO
+            </a>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           PRESETS
+           ====================================================== -->
+
+      <div class="card section">
+
+
+        <div class="section-header">
+
+          <div class="section-title">
+            🎯 Preset ditemukan
+          </div>
+
+
+          <div
+            id="presetCount"
+            class="count"
+          >
+            0 link
+          </div>
+
+        </div>
+
+
+        <div
+          id="presetList"
+          class="preset-list"
+        ></div>
+
+
+        <div
+          id="scanInfo"
+          class="scan-info"
+        >
+          Scanner akan mencari link preset dari caption,
+          metadata, komentar, dan reply komentar.
+        </div>
+
+
+        <div
+          id="debugBox"
+          class="debug-box"
+          style="display:none"
+        ></div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+  <footer class="footer">
+    Preset Hunter • TikWM scanner
+  </footer>
+
+
+</div>
+
+
+<div
+  id="toast"
+  class="toast"
+></div>
+
+
+<script>
+
+/*
+ * ================================================================
+ * PRESET HUNTER
+ * ================================================================
+ *
+ * API:
+ *
+ * https://tikwm.com/api/
+ *
+ * Comment:
+ *
+ * https://tikwm.com/api/comment/list
+ *
+ * Reply:
+ *
+ * https://tikwm.com/api/comment/reply
+ *
+ * Tidak membutuhkan RapidAPI.
+ *
+ * ================================================================
+ */
+
+
+/* ================================================================
+   CONFIG
+   ================================================================ */
+
+const CONFIG = {
+
+  TIKWM_API:
+    "https://tikwm.com/api",
+
+  MAX_COMMENTS:
+    50,
+
+  MAX_REPLIES_PER_COMMENT:
+    50,
+
+  REQUEST_DELAY_MS:
+    1100
+
+};
+
+
+/* ================================================================
+   STATE
+   ================================================================ */
+
+let lastRequestTime = 0;
+
+let currentPresets = [];
+
+let currentVideoData = null;
+
+let currentComments = [];
+
+let currentReplies = [];
+
+
+/* ================================================================
+   BASIC HELPERS
+   ================================================================ */
+
+function sleep(ms) {
+
+  return new Promise(
+    resolve =>
+      setTimeout(resolve, ms)
+  );
+
+}
+
+
+async function throttle() {
+
+  const delay =
+    Number(
+      CONFIG.REQUEST_DELAY_MS
+    ) || 0;
+
+  const now =
+    Date.now();
+
+  const elapsed =
+    now - lastRequestTime;
+
+  if (
+    elapsed < delay
+  ) {
+
+    await sleep(
+      delay - elapsed
+    );
+
+  }
+
+  lastRequestTime =
+    Date.now();
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+  .replace(
+    /</g,
+    "&lt;"
+  )
+  .replace(
+    />/g,
+    "&gt;"
+  )
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+function formatNumber(value) {
+
+  const number =
+    Number(value);
+
+  if (
+    !Number.isFinite(number)
+  ) {
+
+    return "0";
+
+  }
+
+  return new Intl.NumberFormat(
+    "id-ID",
+    {
+      notation:
+        "compact",
+
+      maximumFractionDigits:
+        1
+    }
+  ).format(number);
+
+}
+
+
+function showToast(message) {
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    showToast.timer
+  );
+
+
+  showToast.timer =
+    setTimeout(
+      () => {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+      2200
+    );
+
+}
+
+
+function showError(message) {
+
+  const box =
+    document.getElementById(
+      "errorBox"
+    );
+
+
+  box.textContent =
+    message;
+
+
+  box.classList.add(
+    "show"
+  );
+
+}
+
+
+function clearError() {
+
+  const box =
+    document.getElementById(
+      "errorBox"
+    );
+
+
+  box.textContent =
+    "";
+
+
+  box.classList.remove(
+    "show"
+  );
+
+}
+
+
+function setProgress(
+  percent,
+  text
+) {
+
+  document.getElementById(
+    "progressFill"
+  ).style.width =
+    `${percent}%`;
+
+
+  document.getElementById(
+    "progressPercent"
+  ).textContent =
+    `${percent}%`;
+
+
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    text;
+
+}
+
+
+function setStep(
+  step,
+  state
+) {
+
+  const element =
+    document.getElementById(
+      `step${step}`
+    );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  element.classList.remove(
+    "active",
+    "done"
+  );
+
+
+  if (state) {
+
+    element.classList.add(
+      state
+    );
+
+  }
+
+}
+
+
+function resetSteps() {
+
+  [
+    "Video",
+    "Comments",
+    "Replies",
+    "Scan",
+    "Done"
+  ]
+  .forEach(
+    step =>
+      setStep(
+        step,
+        ""
+      )
+  );
+
+}
+
+
+/* ================================================================
+   TIKTOK URL
+   ================================================================ */
+
+function isTikTokUrl(value) {
+
+  try {
+
+    const url =
+      new URL(value);
+
+
+    const host =
+      url.hostname
+        .toLowerCase()
+        .replace(
+          /^www\./,
+          ""
+        );
+
+
+    return (
+      host === "tiktok.com" ||
+      host.endsWith(
+        ".tiktok.com"
+      )
+    );
+
+  } catch {
+
+    return false;
+
+  }
+
+}
+
+
+/* ================================================================
+   TIKWM REQUEST
+   ================================================================ */
+
+async function tikwmRequest(
+  endpoint,
+  params = {}
+) {
+
+  const base =
+    String(
+      CONFIG.TIKWM_API
+    )
+    .replace(
+      /\/+$/,
+      ""
+    );
+
+
+  let url =
+    endpoint
+      ? `${base}/${endpoint}`
+      : `${base}/`;
+
+
+  const query =
+    new URLSearchParams();
+
+
+  Object.entries(
+    params
+  )
+  .forEach(
+    ([key, value]) => {
+
+      if (
+        value !== undefined &&
+        value !== null &&
+        value !== ""
+      ) {
+
+        query.set(
+          key,
+          String(value)
+        );
+
+      }
+
+    }
+  );
+
+
+  const queryString =
+    query.toString();
+
+
+  if (queryString) {
+
+    url +=
+      `?${queryString}`;
+
+  }
+
+
+  await throttle();
+
+
+  let response;
+
+
+  try {
+
+    response =
+      await fetch(
+        url,
+        {
+          method:
+            "GET",
+
+          cache:
+            "no-store",
+
+          headers: {
+            Accept:
+              "application/json"
+          }
+        }
+      );
+
+  } catch (error) {
+
+    throw new Error(
+      "Request ke TikWM gagal. " +
+      "Browser kemungkinan memblokir request karena CORS, " +
+      "atau koneksi internet bermasalah."
+    );
+
+  }
+
+
+  const raw =
+    await response.text();
+
+
+  let json;
+
+
+  try {
+
+    json =
+      JSON.parse(raw);
+
+  } catch {
+
+    throw new Error(
+      `TikWM mengembalikan response bukan JSON. HTTP ${response.status}`
+    );
+
+  }
+
+
+  if (
+    !response.ok
+  ) {
+
+    throw new Error(
+      `TikWM HTTP ${response.status}: ${
+        json.msg ||
+        raw ||
+        "Request gagal."
+      }`
+    );
+
+  }
+
+
+  if (
+    json.code !== undefined &&
+    Number(json.code) !== 0
+  ) {
+
+    throw new Error(
+      json.msg ||
+      "TikWM API mengembalikan error."
+    );
+
+  }
+
+
+  return json;
+
+}
+
+
+/* ================================================================
+   VIDEO
+   ================================================================ */
+
+async function fetchVideo(
+  tiktokUrl
+) {
+
+  return await tikwmRequest(
+    "",
+    {
+      url:
+        tiktokUrl
+    }
+  );
+
+}
+
+
+function normalizeVideoData(
+  response
+) {
+
+  const data =
+    response?.data ||
+    response ||
+    {};
+
+
+  const author =
+    data.author ||
+    {};
+
+
+  const videoUrl =
+    data.hdplay ||
+    data.play ||
+    data.wmplay ||
+    data.download_url ||
+    data.download ||
+    "";
+
+
+  const cover =
+    data.origin_cover ||
+    data.cover ||
+    data.dynamic_cover ||
+    "";
+
+
+  const title =
+    data.title ||
+    data.desc ||
+    data.description ||
+    "";
+
+
+  const nickname =
+    author.nickname ||
+    data.nickname ||
+    "TikTok User";
+
+
+  const uniqueId =
+    author.unique_id ||
+    author.uniqueId ||
+    data.unique_id ||
+    data.uniqueId ||
+    "";
+
+
+  const avatar =
+    author.avatar ||
+    author.avatar_thumb ||
+    author.avatarLarger ||
+    data.author_avatar ||
+    "";
+
+
+  return {
+
+    raw:
+      data,
+
+    id:
+      data.id ||
+      data.aweme_id ||
+      data.awemeId ||
+      "",
+
+    videoUrl,
+
+    cover,
+
+    title,
+
+    nickname,
+
+    uniqueId,
+
+    avatar,
+
+    diggCount:
+      data.digg_count ??
+      data.like_count ??
+      data.likes ??
+      0,
+
+    commentCount:
+      data.comment_count ??
+      data.comments ??
+      0,
+
+    shareCount:
+      data.share_count ??
+      data.shares ??
+      0,
+
+    playCount:
+      data.play_count ??
+      data.views ??
+      data.view_count ??
+      0
+
+  };
+
+}
+
+
+/* ================================================================
+   COMMENTS
+   ================================================================ */
+
+async function fetchComments(
+  tiktokUrl
+) {
+
+  const comments = [];
+
+  let cursor = 0;
+
+  let page = 0;
+
+  const maxComments =
+    Math.max(
+      1,
+      Number(
+        CONFIG.MAX_COMMENTS
+      ) || 50
+    );
+
+
+  while (
+    comments.length <
+      maxComments &&
+    page < 20
+  ) {
+
+    const remaining =
+      maxComments -
+      comments.length;
+
+
+    const count =
+      Math.min(
+        50,
+        remaining
+      );
+
+
+    const response =
+      await tikwmRequest(
+        "comment/list",
+        {
+          url:
+            tiktokUrl,
+
+          count,
+
+          cursor
+        }
+      );
+
+
+    const data =
+      response?.data ||
+      {};
+
+
+    const list =
+      Array.isArray(
+        data.comments
+      )
+        ? data.comments
+        : [];
+
+
+    comments.push(
+      ...list
+    );
+
+
+    page++;
+
+
+    if (
+      !data.hasMore ||
+      !list.length
+    ) {
+
+      break;
+
+    }
+
+
+    const nextCursor =
+      data.cursor;
+
+
+    if (
+      nextCursor === undefined ||
+      nextCursor === null ||
+      String(nextCursor) ===
+        String(cursor)
+    ) {
+
+      break;
+
+    }
+
+
+    cursor =
+      nextCursor;
+
+  }
+
+
+  return comments.slice(
+    0,
+    maxComments
+  );
+
+}
+
+
+/* ================================================================
+   COMMENT TEXT
+   ================================================================ */
+
+function getCommentText(
+  comment
+) {
+
+  return (
+    comment?.text ||
+    comment?.content ||
+    comment?.comment_text ||
+    comment?.commentText ||
+    ""
+  );
+
+}
+
+
+/* ================================================================
+   REPLY COUNT
+   ================================================================ */
+
+function getReplyTotal(
+  comment
+) {
+
+  return Number(
+    comment?.reply_total ??
+    comment?.replyTotal ??
+    comment?.reply_comment_total ??
+    comment?.replyCommentTotal ??
+    comment?.reply_count ??
+    0
+  ) || 0;
+
+}
+
+
+/* ================================================================
+   REPLIES
+   ================================================================ */
+
+async function fetchReplies(
+  comment
+) {
+
+  if (
+    !comment
+  ) {
+
+    return [];
+
+  }
+
+
+  const commentId =
+    comment.id ||
+    comment.cid ||
+    comment.comment_id ||
+    "";
+
+
+  if (!commentId) {
+
+    return [];
+
+  }
+
+
+  const total =
+    getReplyTotal(
+      comment
+    );
+
+
+  if (
+    total <= 0
+  ) {
+
+    return [];
+
+  }
+
+
+  const maxReplies =
+    Math.min(
+      total,
+      Math.max(
+        1,
+        Number(
+          CONFIG.MAX_REPLIES_PER_COMMENT
+        ) || 50
+      )
+    );
+
+
+  const replies = [];
+
+  let cursor = 0;
+
+  let page = 0;
+
+
+  while (
+    replies.length <
+      maxReplies &&
+    page < 10
+  ) {
+
+    const remaining =
+      maxReplies -
+      replies.length;
+
+
+    const count =
+      Math.min(
+        50,
+        remaining
+      );
+
+
+    const response =
+      await tikwmRequest(
+        "comment/reply",
+        {
+          comment_id:
+            commentId,
+
+          count,
+
+          cursor
+        }
+      );
+
+
+    const data =
+      response?.data ||
+      {};
+
+
+    const list =
+      Array.isArray(
+        data.comments
+      )
+        ? data.comments
+        : [];
+
+
+    replies.push(
+      ...list
+    );
+
+
+    page++;
+
+
+    if (
+      !data.hasMore ||
+      !list.length
+    ) {
+
+      break;
+
+    }
+
+
+    const nextCursor =
+      data.cursor;
+
+
+    if (
+      nextCursor === undefined ||
+      nextCursor === null ||
+      String(nextCursor) ===
+        String(cursor)
+    ) {
+
+      break;
+
+    }
+
+
+    cursor =
+      nextCursor;
+
+  }
+
+
+  return replies.slice(
+    0,
+    maxReplies
+  );
+
+}
+
+
+/* ================================================================
+   URL EXTRACTION
+   ================================================================ */
+
+/*
+ * Fungsi ini sengaja tidak hanya:
+ *
+ * text.match(/https?:\/\/.../)
+ *
+ * karena komentar TikTok kadang memecah URL
+ * dengan newline.
+ */
+
+function normalizeCommentText(
+  text
+) {
+
+  return String(
+    text || ""
+  )
+  .replace(
+    /\r/g,
+    ""
+  )
+  .replace(
+    /\u200B/g,
+    ""
+  );
+
+}
+
+
+/*
+ * Cari URL standar.
+ */
+
+function findUrls(
+  text
+) {
+
+  if (!text) {
+    return [];
+  }
+
+
+  const source =
+    normalizeCommentText(
+      text
+    );
+
+
+  const matches =
+    source.match(
+      /https?:\/\/[^\s<>"'`]+/gi
+    ) || [];
+
+
+  return matches
+    .map(
+      url =>
+        cleanUrl(
+          url
+        )
+    )
+    .filter(Boolean);
+
+}
+
+
+/*
+ * Ambil URL + konteks teks di sekitarnya.
+ *
+ * Ini penting untuk:
+ *
+ * Xml:
+ * https://drive.google.com/...
+ *
+ * atau:
+ *
+ * preset:
+ * https://...
+ */
+
+function findUrlsWithContext(
+  text
+) {
+
+  if (!text) {
+    return [];
+  }
+
+
+  const source =
+    normalizeCommentText(
+      text
+    );
+
+
+  const regex =
+    /https?:\/\/[^\s<>"'`]+/gi;
+
+
+  const results = [];
+
+  let match;
+
+
+  while (
+    (match =
+      regex.exec(source)) !== null
+  ) {
+
+    const url =
+      cleanUrl(
+        match[0]
+      );
+
+
+    const start =
+      Math.max(
+        0,
+        match.index - 300
+      );
+
+
+    const end =
+      Math.min(
+        source.length,
+        match.index +
+        match[0].length +
+        150
+      );
+
+
+    const context =
+      source.substring(
+        start,
+        end
+      );
+
+
+    results.push({
+      url,
+      context
+    });
+
+  }
+
+
+  return results;
+
+}
+
+
+/*
+ * Bersihkan tanda baca.
+ */
+
+function cleanUrl(
+  url
+) {
+
+  return String(
+    url || ""
+  )
+  .trim()
+  .replace(
+    /[)\]}>.,!?;:'"]+$/g,
+    ""
+  );
+
+}
+
+
+/* ================================================================
+   TIKTOK LINK DETECTOR
+   ================================================================ */
+
+function isTikTokLink(
+  url
+) {
+
+  const lower =
+    String(
+      url || ""
+    )
+    .toLowerCase();
+
+
+  return (
+    lower.includes(
+      "tiktok.com"
+    ) ||
+
+    lower.includes(
+      "vt.tiktok.com"
+    ) ||
+
+    lower.includes(
+      "vm.tiktok.com"
+    )
+  );
+
+}
+
+
+/* ================================================================
+   PRESET DETECTOR
+   ================================================================ */
+
+function isPresetUrl(
+  url,
+  context = ""
+) {
+
+  const value =
+    String(
+      url || ""
+    )
+    .trim();
+
+
+  const lower =
+    value.toLowerCase();
+
+
+  const ctx =
+    String(
+      context || ""
+    )
+    .toLowerCase();
+
+
+  if (!value) {
+    return false;
+  }
+
+
+  /*
+   * Jangan memasukkan TikTok
+   */
+
+  if (
+    isTikTokLink(
+      value
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  /*
+   * ==========================================================
+   * ALIGHT MOTION
+   * ==========================================================
+   */
+
+  const alightPatterns = [
+
+    "alightcreative.com",
+
+    "alightmotion.com",
+
+    "alight.link",
+
+    "alight-motion",
+
+    "alightmotion",
+
+    "amshare",
+
+    "/am/share/",
+
+    "/am/"
+
+  ];
+
+
+  if (
+    alightPatterns.some(
+      pattern =>
+        lower.includes(
+          pattern
+        )
+    )
+  ) {
+
+    return true;
+
+  }
+
+
+  /*
+   * ==========================================================
+   * XML
+   * ==========================================================
+   */
+
+  const xmlContext =
+    ctx.includes("xml") ||
+    ctx.includes("preset") ||
+    ctx.includes("project") ||
+    ctx.includes("alight motion") ||
+    ctx.includes("alightmotion") ||
+    ctx.includes("am prem") ||
+    ctx.includes("am:");
+
+
+
+  /*
+   * Direct XML URL
+   */
+
+  if (
+    lower.includes(
+      ".xml"
+    )
+  ) {
+
+    return true;
+
+  }
+
+
+  /*
+   * Google Drive dengan konteks XML/preset.
+   *
+   * Contoh screenshot:
+   *
+   * Xml :
+   * https://drive.google.com/file/d/...
+   */
+
+  if (
+    lower.includes(
+      "drive.google.com"
+    ) &&
+    xmlContext
+  ) {
+
+    return true;
+
+  }
+
+
+  /*
+   * MediaFire / Mega / Dropbox
+   * hanya dianggap preset jika konteks
+   * menunjukkan XML/preset/project.
+   */
+
+  const fileHosts = [
+
+    "drive.google.com",
+
+    "docs.google.com",
+
+    "mediafire.com",
+
+    "mega.nz",
+
+    "dropbox.com"
+
+  ];
+
+
+  if (
+    fileHosts.some(
+      host =>
+        lower.includes(host)
+    ) &&
+    xmlContext
+  ) {
+
+    return true;
+
+  }
+
+
+  /*
+   * URL yang mengandung kata preset.
+   */
+
+  const genericPatterns = [
+
+    "preset",
+
+    "template",
+
+    "project",
+
+    "alight"
+
+  ];
+
+
+  if (
+    genericPatterns.some(
+      pattern =>
+        lower.includes(
+          pattern
+        )
+    )
+  ) {
+
+    return true;
+
+  }
+
+
+  return false;
+
+}
+
+
+/* ================================================================
+   FIND PRESETS
+   ================================================================ */
+
+function findPresetLinks(
+  videoData,
+  comments,
+  replies
+) {
+
+  const found =
+    new Map();
+
+
+  function addFromText(
+    text,
+    source
+  ) {
+
+    if (!text) {
+      return;
+    }
+
+
+    const items =
+      findUrlsWithContext(
+        text
+      );
+
+
+    items.forEach(
+      item => {
+
+        if (
+          !item.url
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          isPresetUrl(
+            item.url,
+            item.context
+          )
+        ) {
+
+          const key =
+            item.url
+              .toLowerCase();
+
+
+          if (
+            !found.has(
+              key
+            )
+          ) {
+
+            found.set(
+              key,
+              {
+                url:
+                  item.url,
+
+                source:
+                  source
+              }
+            );
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /*
+   * ==========================================================
+   * CAPTION
+   * ==========================================================
+   */
+
+  addFromText(
+    videoData?.title,
+    "Caption"
+  );
+
+
+  /*
+   * ==========================================================
+   * RAW METADATA
+   * ==========================================================
+   */
+
+  try {
+
+    const metadata =
+      JSON.stringify(
+        videoData?.raw ||
+        {}
+      );
+
+
+    addFromText(
+      metadata,
+      "Metadata"
+    );
+
+  } catch {
+
+    // ignore
+
+  }
+
+
+  /*
+   * ==========================================================
+   * COMMENTS
+   * ==========================================================
+   */
+
+  for (
+    const comment of
+    comments || []
+  ) {
+
+    addFromText(
+      getCommentText(
+        comment
+      ),
+      "Komentar"
+    );
+
+  }
+
+
+  /*
+   * ==========================================================
+   * REPLIES
+   * ==========================================================
+   */
+
+  for (
+    const reply of
+    replies || []
+  ) {
+
+    addFromText(
+      getCommentText(
+        reply
+      ),
+      "Reply"
+    );
+
+  }
+
+
+  return Array.from(
+    found.values()
+  );
+
+}
+
+
+/* ================================================================
+   RENDER VIDEO
+   ================================================================ */
+
+function renderVideo(
+  data
+) {
+
+  const videoBox =
+    document.getElementById(
+      "videoBox"
+    );
+
+
+  videoBox.innerHTML =
+    "";
+
+
+  if (
+    data.videoUrl
+  ) {
+
+    const video =
+      document.createElement(
+        "video"
+      );
+
+
+    video.controls =
+      true;
+
+    video.playsInline =
+      true;
+
+    video.preload =
+      "metadata";
+
+
+    if (
+      data.cover
+    ) {
+
+      video.poster =
+        data.cover;
+
+    }
+
+
+    video.src =
+      data.videoUrl;
+
+
+    videoBox.appendChild(
+      video
+    );
+
+  }
+
+  else if (
+    data.cover
+  ) {
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+
+    image.className =
+      "video-cover";
+
+
+    image.src =
+      data.cover;
+
+
+    image.alt =
+      "TikTok video";
+
+
+    videoBox.appendChild(
+      image
+    );
+
+  }
+
+  else {
+
+    videoBox.innerHTML = `
+
+      <div
+        style="
+          min-height:300px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:#777;
+        "
+      >
+        Video tidak tersedia
+      </div>
+
+    `;
+
+  }
+
+
+  /*
+   * Creator
+   */
+
+  document.getElementById(
+    "creatorName"
+  ).textContent =
+    data.nickname ||
+    "TikTok User";
+
+
+  document.getElementById(
+    "creatorUsername"
+  ).textContent =
+    data.uniqueId
+      ? `@${data.uniqueId}`
+      : "";
+
+
+  /*
+   * Avatar
+   */
+
+  const avatar =
+    document.getElementById(
+      "avatar"
+    );
+
+
+  if (
+    data.avatar
+  ) {
+
+    avatar.src =
+      data.avatar;
+
+
+    avatar.style.display =
+      "block";
+
+  }
+
+  else {
+
+    avatar.style.display =
+      "none";
+
+  }
+
+
+  /*
+   * Caption
+   */
+
+  document.getElementById(
+    "caption"
+  ).textContent =
+    data.title ||
+    "Tidak ada caption.";
+
+
+  /*
+   * Stats
+   */
+
+  document.getElementById(
+    "stats"
+  ).innerHTML = `
+
+    <div class="stat">
+      ❤️ ${formatNumber(
+        data.diggCount
+      )}
+    </div>
+
+    <div class="stat">
+      💬 ${formatNumber(
+        data.commentCount
+      )}
+    </div>
+
+    <div class="stat">
+      🔁 ${formatNumber(
+        data.shareCount
+      )}
+    </div>
+
+    <div class="stat">
+      ▶ ${formatNumber(
+        data.playCount
+      )}
+    </div>
+
+  `;
+
+
+  /*
+   * Video button
+   */
+
+  const download =
+    document.getElementById(
+      "downloadButton"
+    );
+
+
+  if (
+    data.videoUrl
+  ) {
+
+    download.href =
+      data.videoUrl;
+
+    download.style.display =
+      "inline-flex";
+
+  }
+
+  else {
+
+    download.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ================================================================
+   RENDER PRESETS
+   ================================================================ */
+
+function renderPresets(
+  presets
+) {
+
+  const list =
+    document.getElementById(
+      "presetList"
+    );
+
+
+  document.getElementById(
+    "presetCount"
+  ).textContent =
+    `${presets.length} link`;
+
+
+  if (
+    !presets.length
+  ) {
+
+    list.innerHTML = `
+
+      <div class="empty">
+
+        ❌ Belum ditemukan link preset.
+
+        <br><br>
+
+        Scanner sudah memeriksa
+        caption, metadata, komentar,
+        dan reply yang berhasil diambil.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    presets
+      .map(
+        (preset, index) => {
+
+          return `
+
+            <div class="preset">
+
+              <div class="preset-icon">
+                ⚡
+              </div>
+
+
+              <div class="preset-content">
+
+                <div class="preset-name">
+                  Preset #${index + 1}
+                </div>
+
+
+                <div
+                  class="preset-url"
+                  title="${escapeHtml(
+                    preset.url
+                  )}"
+                >
+                  ${escapeHtml(
+                    preset.url
+                  )}
+                </div>
+
+
+                <div class="preset-source">
+
+                  Sumber:
+                  ${escapeHtml(
+                    preset.source
+                  )}
+
+                </div>
+
+              </div>
+
+
+              <div class="preset-actions">
+
+                <button
+                  class="small-btn"
+                  type="button"
+                  onclick="openPreset(${index})"
+                >
+                  BUKA
+                </button>
+
+
+                <button
+                  class="small-btn"
+                  type="button"
+                  onclick="copyPreset(${index})"
+                >
+                  COPY
+                </button>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* ================================================================
+   OPEN PRESET
+   ================================================================ */
+
+function openPreset(
+  index
+) {
+
+  const preset =
+    currentPresets[index];
+
+
+  if (!preset) {
+    return;
+  }
+
+
+  window.open(
+    preset.url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* ================================================================
+   COPY PRESET
+   ================================================================ */
+
+async function copyPreset(
+  index
+) {
+
+  const preset =
+    currentPresets[index];
+
+
+  if (!preset) {
+    return;
+  }
+
+
+  try {
+
+    await navigator
+      .clipboard
+      .writeText(
+        preset.url
+      );
+
+
+    showToast(
+      "Link preset berhasil dicopy."
+    );
+
+  }
+
+  catch {
+
+    const textarea =
+      document.createElement(
+        "textarea"
+      );
+
+
+    textarea.value =
+      preset.url;
+
+
+    textarea.style.position =
+      "fixed";
+
+
+    textarea.style.opacity =
+      "0";
+
+
+    document.body.appendChild(
+      textarea
+    );
+
+
+    textarea.select();
+
+
+    document.execCommand(
+      "copy"
+    );
+
+
+    textarea.remove();
+
+
+    showToast(
+      "Link preset berhasil dicopy."
+    );
+
+  }
+
+}
+
+
+/* ================================================================
+   DEBUG INFO
+   ================================================================ */
+
+function showDebugInfo(
+  videoData,
+  comments,
+  replies,
+  presets
+) {
+
+  const box =
+    document.getElementById(
+      "debugBox"
+    );
+
+
+  /*
+   * Jangan tampilkan debug
+   * kepada user secara default.
+   *
+   * Bisa diaktifkan dengan:
+   *
+   * localStorage.setItem(
+   *   "presetHunterDebug",
+   *   "1"
+   * );
+   */
+
+  if (
+    localStorage.getItem(
+      "presetHunterDebug"
+    ) !== "1"
+  ) {
+
+    box.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  box.style.display =
+    "block";
+
+
+  box.textContent =
+    JSON.stringify(
+      {
+        video:
+          videoData,
+
+        comments:
+          comments.length,
+
+        replies:
+          replies.length,
+
+        presets:
+          presets
+      },
+      null,
+      2
+    );
+
+}
+
+
+/* ================================================================
+   MAIN SCANNER
+   ================================================================ */
+
+async function startScan() {
+
+  clearError();
+
+
+  const input =
+    document.getElementById(
+      "tiktokUrl"
+    );
+
+
+  const scanButton =
+    document.getElementById(
+      "scanButton"
+    );
+
+
+  const progressCard =
+    document.getElementById(
+      "progressCard"
+    );
+
+
+  const result =
+    document.getElementById(
+      "result"
+    );
+
+
+  const url =
+    input.value.trim();
+
+
+  /*
+   * ==========================================================
+   * VALIDATION
+   * ==========================================================
+   */
+
+  if (!url) {
+
+    showError(
+      "Masukkan link TikTok terlebih dahulu."
+    );
+
+    input.focus();
+
+    return;
+
+  }
+
+
+  if (
+    !isTikTokUrl(
+      url
+    )
+  ) {
+
+    showError(
+      "Link yang dimasukkan bukan URL TikTok yang valid."
+    );
+
+    input.focus();
+
+    return;
+
+  }
+
+
+  /*
+   * ==========================================================
+   * RESET
+   * ==========================================================
+   */
+
+  result.classList.remove(
+    "show"
+  );
+
+
+  progressCard.classList.add(
+    "show"
+  );
+
+
+  scanButton.disabled =
+    true;
+
+
+  scanButton.textContent =
+    "SCANNING...";
+
+
+  resetSteps();
+
+
+  setProgress(
+    2,
+    "Menghubungi TikWM..."
+  );
+
+
+  currentPresets =
+    [];
+
+  currentVideoData =
+    null;
+
+  currentComments =
+    [];
+
+  currentReplies =
+    [];
+
+
+  let videoData;
+
+  let comments = [];
+
+  let replies = [];
+
+
+  try {
+
+
+    /* ========================================================
+       STEP 1 — VIDEO
+       ======================================================== */
+
+    setStep(
+      "Video",
+      "active"
+    );
+
+
+    setProgress(
+      8,
+      "Mengambil data video..."
+    );
+
+
+    const response =
+      await fetchVideo(
+        url
+      );
+
+
+    videoData =
+      normalizeVideoData(
+        response
+      );
+
+
+    currentVideoData =
+      videoData;
+
+
+    renderVideo(
+      videoData
+    );
+
+
+    setStep(
+      "Video",
+      "done"
+    );
+
+
+    setProgress(
+      25,
+      "Video berhasil diambil."
+    );
+
+
+    /* ========================================================
+       STEP 2 — COMMENTS
+       ======================================================== */
+
+    setStep(
+      "Comments",
+      "active"
+    );
+
+
+    setProgress(
+      30,
+      "Mengambil komentar..."
+    );
+
+
+    try {
+
+      comments =
+        await fetchComments(
+          url
+        );
+
+
+      currentComments =
+        comments;
+
+
+    }
+
+    catch (error) {
+
+      console.warn(
+        "Comment error:",
+        error
+      );
+
+
+      comments =
+        [];
+
+      currentComments =
+        [];
+
+
+      document.getElementById(
+        "scanInfo"
+      ).textContent =
+        "Video berhasil diambil, tetapi komentar gagal diambil: " +
+        error.message;
+
+    }
+
+
+    setStep(
+      "Comments",
+      "done"
+    );
+
+
+    setProgress(
+      45,
+      `${comments.length} komentar berhasil diambil.`
+    );
+
+
+    /* ========================================================
+       STEP 3 — REPLIES
+       ======================================================== */
+
+    setStep(
+      "Replies",
+      "active"
+    );
+
+
+    setProgress(
+      48,
+      "Mencari reply komentar..."
+    );
+
+
+    /*
+     * Hanya komentar yang mempunyai reply
+     * yang akan dipanggil.
+     */
+
+    let commentsWithReplies =
+      0;
+
+
+    for (
+      let i = 0;
+      i < comments.length;
+      i++
+    ) {
+
+      const comment =
+        comments[i];
+
+
+      const replyTotal =
+        getReplyTotal(
+          comment
+        );
+
+
+      if (
+        replyTotal > 0
+      ) {
+
+        commentsWithReplies++;
+
+
+        try {
+
+          const resultReplies =
+            await fetchReplies(
+              comment
+            );
+
+
+          replies.push(
+            ...resultReplies
+          );
+
+        }
+
+        catch (error) {
+
+          console.warn(
+            "Reply error:",
+            error
+          );
+
+        }
+
+      }
+
+
+      const progress =
+        48 +
+        Math.round(
+          (
+            (i + 1) /
+            Math.max(
+              comments.length,
+              1
+            )
+          ) * 27
+        );
+
+
+      setProgress(
+        progress,
+        `Membaca reply ${i + 1}/${comments.length}...`
+      );
+
+    }
+
+
+    currentReplies =
+      replies;
+
+
+    setStep(
+      "Replies",
+      "done"
+    );
+
+
+    /* ========================================================
+       STEP 4 — SCAN
+       ======================================================== */
+
+    setStep(
+      "Scan",
+      "active"
+    );
+
+
+    setProgress(
+      80,
+      "Memindai semua link preset..."
+    );
+
+
+    currentPresets =
+      findPresetLinks(
+        videoData,
+        comments,
+        replies
+      );
+
+
+    renderPresets(
+      currentPresets
+    );
+
+
+    /*
+     * Informasi hasil
+     */
+
+    document.getElementById(
+      "scanInfo"
+    ).textContent =
+      `Selesai memindai: ` +
+      `${comments.length} komentar + ` +
+      `${replies.length} reply ` +
+      `(${commentsWithReplies} komentar memiliki reply). ` +
+      `Ditemukan ${currentPresets.length} link preset.`;
+
+
+    /*
+     * Debug
+     */
+
+    showDebugInfo(
+      videoData,
+      comments,
+      replies,
+      currentPresets
+    );
+
+
+    setStep(
+      "Scan",
+      "done"
+    );
+
+
+    setProgress(
+      95,
+      "Menampilkan hasil..."
+    );
+
+
+    /* ========================================================
+       DONE
+       ======================================================== */
+
+    setStep(
+      "Done",
+      "done"
+    );
+
+
+    setProgress(
+      100,
+      "Scan selesai."
+    );
+
+
+    result.classList.add(
+      "show"
+    );
+
+
+    setTimeout(
+      () => {
+
+        result.scrollIntoView({
+          behavior:
+            "smooth",
+
+          block:
+            "start"
+        });
+
+      },
+      150
+    );
+
+
+  }
+
+  catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    setProgress(
+      100,
+      "Scanner gagal."
+    );
+
+
+    const message =
+      String(
+        error?.message ||
+        error
+      );
+
+
+    if (
+      message
+        .toLowerCase()
+        .includes("cors")
+    ) {
+
+      showError(
+        "Request ke TikWM diblokir browser karena CORS. " +
+        "GitHub Pages tidak bisa memperbaiki CORS dari sisi frontend."
+      );
+
+    }
+
+    else {
+
+      showError(
+        "Scanner gagal: " +
+        message
+      );
+
+    }
+
+  }
+
+  finally {
+
+    scanButton.disabled =
+      false;
+
+
+    scanButton.textContent =
+      "🔎 SCAN";
+
+  }
+
+}
+
+
+/* ================================================================
+   ENTER KEY
+   ================================================================ */
+
+document
+  .getElementById(
+    "tiktokUrl"
+  )
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key ===
+        "Enter"
+      ) {
+
+        startScan();
+
+      }
+
+    }
+  );
+
+
+/* ================================================================
+   PASTE
+   ================================================================ */
+
+document
+  .getElementById(
+    "tiktokUrl"
+  )
+  .addEventListener(
+    "paste",
+    () => {
+
+      clearError();
+
+    }
+  );
+
+
+/* ================================================================
+   BUTTON
+   ================================================================ */
+
+document
+  .getElementById(
+    "scanButton"
+  )
+  .addEventListener(
+    "click",
+    startScan
+  );
+
+
+</script>
+
+
+</body>
+</html>
