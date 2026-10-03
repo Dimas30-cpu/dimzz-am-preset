@@ -193,6 +193,7 @@ button:hover{
   color:#ff8c9d;
   font-size:13px;
   line-height:1.5;
+  word-break:break-word;
 }
 
 .error.show{
@@ -410,6 +411,7 @@ button:hover{
 }
 
 @media(max-width:650px){
+
   body{
     padding:16px 10px 35px;
   }
@@ -453,6 +455,7 @@ button:hover{
 
   <div class="header">
     <div class="logo">PRESET HUNTER</div>
+
     <div class="subtitle">
       TikTok → Comments → Replies → Preset Scanner
     </div>
@@ -461,6 +464,7 @@ button:hover{
   <div class="card">
 
     <div class="input-wrap">
+
       <input
         id="tiktokUrl"
         type="text"
@@ -475,6 +479,7 @@ button:hover{
       >
         SCAN
       </button>
+
     </div>
 
     <div id="errorBox" class="error"></div>
@@ -482,28 +487,73 @@ button:hover{
     <div id="progress" class="progress">
 
       <div class="progress-top">
-        <div id="progressTitle" class="progress-title">
+
+        <div
+          id="progressTitle"
+          class="progress-title"
+        >
           Preparing...
         </div>
 
-        <div id="progressPercent" class="progress-percent">
+        <div
+          id="progressPercent"
+          class="progress-percent"
+        >
           0%
         </div>
+
       </div>
 
       <div class="bar">
-        <div id="barFill" class="bar-fill"></div>
+        <div
+          id="barFill"
+          class="bar-fill"
+        ></div>
       </div>
 
       <div class="steps">
-        <div id="stepVideo" class="step">VIDEO</div>
-        <div id="stepComments" class="step">COMMENTS</div>
-        <div id="stepReplies" class="step">REPLIES</div>
-        <div id="stepScan" class="step">SCAN</div>
-        <div id="stepDone" class="step">DONE</div>
+
+        <div
+          id="stepVideo"
+          class="step"
+        >
+          VIDEO
+        </div>
+
+        <div
+          id="stepComments"
+          class="step"
+        >
+          COMMENTS
+        </div>
+
+        <div
+          id="stepReplies"
+          class="step"
+        >
+          REPLIES
+        </div>
+
+        <div
+          id="stepScan"
+          class="step"
+        >
+          SCAN
+        </div>
+
+        <div
+          id="stepDone"
+          class="step"
+        >
+          DONE
+        </div>
+
       </div>
 
-      <div id="statusText" class="status">
+      <div
+        id="statusText"
+        class="status"
+      >
         Menyiapkan scanner...
       </div>
 
@@ -514,31 +564,64 @@ button:hover{
       <div class="video-card">
 
         <div class="video-box">
+
           <video
             id="videoPlayer"
             controls
             playsinline
             preload="metadata"
           ></video>
+
         </div>
 
         <div class="info">
 
           <h2 id="authorName">-</h2>
 
-          <div id="authorUsername" class="username">
+          <div
+            id="authorUsername"
+            class="username"
+          >
             @-
           </div>
 
-          <div id="caption" class="caption">
+          <div
+            id="caption"
+            class="caption"
+          >
             -
           </div>
 
           <div class="stats">
-            <div id="statLikes" class="stat">❤️ 0</div>
-            <div id="statComments" class="stat">💬 0</div>
-            <div id="statShares" class="stat">↗️ 0</div>
-            <div id="statViews" class="stat">👁️ 0</div>
+
+            <div
+              id="statLikes"
+              class="stat"
+            >
+              ❤️ 0
+            </div>
+
+            <div
+              id="statComments"
+              class="stat"
+            >
+              💬 0
+            </div>
+
+            <div
+              id="statShares"
+              class="stat"
+            >
+              ↗️ 0
+            </div>
+
+            <div
+              id="statViews"
+              class="stat"
+            >
+              👁️ 0
+            </div>
+
           </div>
 
           <a
@@ -555,30 +638,56 @@ button:hover{
 
       </div>
 
+
       <div class="section">
 
         <div class="section-title">
-          <h3>PRESET FOUND</h3>
-          <div id="presetCount" class="badge">0 LINK</div>
+
+          <h3>
+            PRESET FOUND
+          </h3>
+
+          <div
+            id="presetCount"
+            class="badge"
+          >
+            0 LINK
+          </div>
+
         </div>
 
-        <div id="presetList" class="preset-list"></div>
+        <div
+          id="presetList"
+          class="preset-list"
+        ></div>
 
       </div>
 
+
       <div class="section">
 
         <div class="section-title">
-          <h3>SCAN INFO</h3>
+
+          <h3>
+            SCAN INFO
+          </h3>
+
         </div>
 
-        <div id="commentsInfo" class="comments-info">
+        <div
+          id="commentsInfo"
+          class="comments-info"
+        >
           -
         </div>
 
       </div>
 
-      <div id="debugBox" class="debug"></div>
+
+      <div
+        id="debugBox"
+        class="debug"
+      ></div>
 
     </div>
 
@@ -586,19 +695,27 @@ button:hover{
 
 </div>
 
+
 <script>
 
 /* =========================================================
-   GLOBAL STATE
+   STATE
 ========================================================= */
 
 const state = {
+
   comments: [],
+
   replies: [],
+
   allTexts: [],
+
   presets: [],
+
   videoData: null,
+
   originalUrl: ""
+
 };
 
 
@@ -606,38 +723,90 @@ const state = {
    DOM
 ========================================================= */
 
-const $ = id => document.getElementById(id);
+const $ = id =>
+  document.getElementById(id);
 
 
 /* =========================================================
-   BASIC HELPERS
+   CONFIG CHECK
+========================================================= */
+
+function getConfig(){
+
+  /*
+   * config.js menggunakan:
+   *
+   * const CONFIG = {...}
+   *
+   * Karena script config.js dipanggil sebelum
+   * script ini, CONFIG bisa langsung digunakan.
+   */
+
+  if(
+    typeof CONFIG === "undefined"
+  ){
+
+    throw new Error(
+      "config.js tidak ditemukan atau CONFIG belum didefinisikan."
+    );
+
+  }
+
+  return CONFIG;
+}
+
+
+/* =========================================================
+   HELPERS
 ========================================================= */
 
 function escapeHtml(value){
+
   return String(value ?? "")
+
     .replace(/&/g, "&amp;")
+
     .replace(/</g, "&lt;")
+
     .replace(/>/g, "&gt;")
+
     .replace(/"/g, "&quot;")
+
     .replace(/'/g, "&#039;");
 }
 
 
 function formatNumber(value){
-  const n = Number(value || 0);
 
-  if(!Number.isFinite(n)) return "0";
+  const n =
+    Number(value || 0);
+
+  if(!Number.isFinite(n)){
+    return "0";
+  }
 
   if(n >= 1000000000){
-    return (n / 1000000000).toFixed(1) + "B";
+
+    return (
+      n / 1000000000
+    ).toFixed(1) + "B";
+
   }
 
   if(n >= 1000000){
-    return (n / 1000000).toFixed(1) + "M";
+
+    return (
+      n / 1000000
+    ).toFixed(1) + "M";
+
   }
 
   if(n >= 1000){
-    return (n / 1000).toFixed(1) + "K";
+
+    return (
+      n / 1000
+    ).toFixed(1) + "K";
+
   }
 
   return String(n);
@@ -645,6 +814,7 @@ function formatNumber(value){
 
 
 function normalizeText(value){
+
   return String(value || "")
     .replace(/\s+/g, " ")
     .trim();
@@ -652,60 +822,105 @@ function normalizeText(value){
 
 
 function sleep(ms){
-  return new Promise(resolve => setTimeout(resolve, ms));
+
+  return new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+
 }
 
 
 /* =========================================================
-   PROGRESS UI
+   PROGRESS
 ========================================================= */
 
-function setProgress(percent, title, status){
+function setProgress(
+  percent,
+  title,
+  status
+){
 
-  $("progress").classList.add("show");
+  $("progress")
+    .classList.add("show");
 
-  const safePercent = Math.max(0, Math.min(100, percent));
+  const safePercent =
+    Math.max(
+      0,
+      Math.min(100, percent)
+    );
 
-  $("barFill").style.width = safePercent + "%";
-  $("progressPercent").textContent = safePercent + "%";
-  $("progressTitle").textContent = title;
-  $("statusText").textContent = status;
+  $("barFill").style.width =
+    safePercent + "%";
+
+  $("progressPercent").textContent =
+    safePercent + "%";
+
+  $("progressTitle").textContent =
+    title;
+
+  $("statusText").textContent =
+    status;
+
 }
 
 
 function activateStep(name){
 
   const steps = [
+
     "Video",
     "Comments",
     "Replies",
     "Scan",
     "Done"
+
   ];
 
-  const index = steps.indexOf(name);
+  const index =
+    steps.indexOf(name);
 
-  steps.forEach((step, i) => {
+  steps.forEach(
+    (step, i) => {
 
-    const el = $("step" + step);
+      const el =
+        $("step" + step);
 
-    if(!el) return;
+      if(!el){
+        return;
+      }
 
-    el.classList.remove("active");
+      el.classList.remove(
+        "active"
+      );
 
-    if(i < index){
-      el.classList.add("done");
-    }else{
-      el.classList.remove("done");
+      if(i < index){
+
+        el.classList.add(
+          "done"
+        );
+
+      }else{
+
+        el.classList.remove(
+          "done"
+        );
+
+      }
+
     }
+  );
 
-  });
-
-  const current = $("step" + name);
+  const current =
+    $("step" + name);
 
   if(current){
-    current.classList.add("active");
+
+    current.classList.add(
+      "active"
+    );
+
   }
+
 }
 
 
@@ -715,41 +930,64 @@ function activateStep(name){
 
 function showError(message){
 
-  const box = $("errorBox");
+  const box =
+    $("errorBox");
 
-  box.innerHTML = escapeHtml(message);
-  box.classList.add("show");
+  box.textContent =
+    message;
+
+  box.classList.add(
+    "show"
+  );
+
 }
 
 
 function clearError(){
-  $("errorBox").classList.remove("show");
-  $("errorBox").textContent = "";
+
+  $("errorBox")
+    .classList.remove(
+      "show"
+    );
+
+  $("errorBox")
+    .textContent = "";
+
 }
 
 
 /* =========================================================
-   URL VALIDATION
+   TIKTOK URL
 ========================================================= */
 
 function isTikTokUrl(url){
 
   try{
 
-    const parsed = new URL(url);
+    const parsed =
+      new URL(url);
 
-    const host = parsed.hostname
-      .toLowerCase()
-      .replace(/^www\./, "");
+    const host =
+      parsed.hostname
+        .toLowerCase()
+        .replace(/^www\./, "");
 
     return (
+
       host === "tiktok.com" ||
-      host.endsWith(".tiktok.com")
+
+      host.endsWith(
+        ".tiktok.com"
+      )
+
     );
 
   }catch{
+
     return false;
+
   }
+
 }
 
 
@@ -759,288 +997,574 @@ function isTikTokUrl(url){
 
 async function fetchTikTokVideo(url){
 
+  const config =
+    getConfig();
+
+
   if(
-    !window.CONFIG ||
-    !CONFIG.RAPIDAPI_KEY ||
-    CONFIG.RAPIDAPI_KEY.includes("PASTE_")
+    !config.RAPIDAPI_KEY ||
+    config.RAPIDAPI_KEY.includes(
+      "PASTE_"
+    ) ||
+    config.RAPIDAPI_KEY.includes(
+      "ISI_"
+    )
   ){
+
     throw new Error(
-      "RAPIDAPI_KEY belum diisi di config.js"
+      "RAPIDAPI_KEY belum diisi di config.js."
     );
+
   }
 
+
+  if(
+    !config.RAPIDAPI_HOST
+  ){
+
+    throw new Error(
+      "RAPIDAPI_HOST belum diisi di config.js."
+    );
+
+  }
+
+
   const endpoint =
+
     "https://" +
-    CONFIG.RAPIDAPI_HOST +
+
+    config.RAPIDAPI_HOST +
+
     "/vid/index?url=" +
+
     encodeURIComponent(url);
 
-  const response = await fetch(endpoint, {
 
-    method: "GET",
+  let response;
 
-    headers: {
-      "X-RapidAPI-Key": CONFIG.RAPIDAPI_KEY,
-      "X-RapidAPI-Host": CONFIG.RAPIDAPI_HOST
-    }
+  try{
 
-  });
+    response =
+      await fetch(
+        endpoint,
+        {
+
+          method: "GET",
+
+          headers: {
+
+            "X-RapidAPI-Key":
+              config.RAPIDAPI_KEY,
+
+            "X-RapidAPI-Host":
+              config.RAPIDAPI_HOST
+
+          }
+
+        }
+      );
+
+  }catch(error){
+
+    throw new Error(
+      "Tidak bisa menghubungi RapidAPI. " +
+      "Kemungkinan CORS atau koneksi API."
+    );
+
+  }
+
 
   if(!response.ok){
 
+    let detail = "";
+
+    try{
+
+      detail =
+        await response.text();
+
+    }catch(e){}
+
     throw new Error(
+
       "RapidAPI HTTP " +
+
       response.status +
+
       " - " +
-      response.statusText
+
+      (
+        detail ||
+        response.statusText
+      )
+
     );
 
   }
 
-  const json = await response.json();
 
-  return json;
+  try{
+
+    return await response.json();
+
+  }catch{
+
+    throw new Error(
+      "Response RapidAPI bukan JSON yang valid."
+    );
+
+  }
+
 }
 
 
 /* =========================================================
-   GENERIC VALUE FINDER
+   FIND VALUE
 ========================================================= */
 
-function findFirstValue(obj, keys){
+function findFirstValue(
+  obj,
+  keys
+){
 
-  if(!obj || typeof obj !== "object"){
+  if(
+    !obj ||
+    typeof obj !== "object"
+  ){
+
     return null;
+
   }
 
-  for(const key of keys){
+
+  for(
+    const key of keys
+  ){
 
     if(
-      Object.prototype.hasOwnProperty.call(obj, key) &&
-      obj[key] !== null &&
-      obj[key] !== undefined &&
+
+      Object.prototype
+        .hasOwnProperty
+        .call(obj, key)
+
+      &&
+
+      obj[key] !== null
+
+      &&
+
+      obj[key] !== undefined
+
+      &&
+
       obj[key] !== ""
+
     ){
+
       return obj[key];
+
     }
 
   }
 
-  for(const key of Object.keys(obj)){
 
-    const value = obj[key];
+  for(
+    const key of Object.keys(obj)
+  ){
 
-    if(value && typeof value === "object"){
+    const value =
+      obj[key];
 
-      const result = findFirstValue(
-        value,
-        keys
-      );
+    if(
+      value &&
+      typeof value === "object"
+    ){
 
-      if(result !== null){
+      const result =
+        findFirstValue(
+          value,
+          keys
+        );
+
+      if(
+        result !== null
+      ){
+
         return result;
+
       }
 
     }
 
   }
 
+
   return null;
+
 }
 
 
 /* =========================================================
-   EXTRACT VIDEO DATA
+   VIDEO DATA
 ========================================================= */
 
 function extractVideoData(raw){
 
-  const videoUrl = findFirstValue(raw, [
-    "play",
-    "play_addr",
-    "playUrl",
-    "video_url",
-    "videoUrl",
-    "wmplay",
-    "wm_play",
-    "download_url",
-    "downloadUrl"
-  ]);
+  const videoUrl =
+    findFirstValue(
+      raw,
+      [
 
-  const cover = findFirstValue(raw, [
-    "cover",
-    "origin_cover",
-    "dynamic_cover",
-    "thumbnail",
-    "thumbnail_url"
-  ]);
+        "play",
+        "play_addr",
+        "playUrl",
+        "video_url",
+        "videoUrl",
+        "wmplay",
+        "wm_play",
+        "download_url",
+        "downloadUrl"
 
-  const authorName = findFirstValue(raw, [
-    "nickname",
-    "author_name",
-    "authorName",
-    "name"
-  ]);
+      ]
+    );
 
-  const username = findFirstValue(raw, [
-    "unique_id",
-    "uniqueId",
-    "username",
-    "author_unique_id",
-    "authorUsername"
-  ]);
 
-  const caption = findFirstValue(raw, [
-    "title",
-    "desc",
-    "description",
-    "caption"
-  ]);
+  const cover =
+    findFirstValue(
+      raw,
+      [
 
-  const likes = findFirstValue(raw, [
-    "digg_count",
-    "diggCount",
-    "likes",
-    "like_count"
-  ]);
+        "cover",
+        "origin_cover",
+        "dynamic_cover",
+        "thumbnail",
+        "thumbnail_url"
 
-  const comments = findFirstValue(raw, [
-    "comment_count",
-    "commentCount",
-    "comments"
-  ]);
+      ]
+    );
 
-  const shares = findFirstValue(raw, [
-    "share_count",
-    "shareCount",
-    "shares"
-  ]);
 
-  const views = findFirstValue(raw, [
-    "play_count",
-    "playCount",
-    "views",
-    "view_count"
-  ]);
+  const authorName =
+    findFirstValue(
+      raw,
+      [
+
+        "nickname",
+        "author_name",
+        "authorName",
+        "name"
+
+      ]
+    );
+
+
+  const username =
+    findFirstValue(
+      raw,
+      [
+
+        "unique_id",
+        "uniqueId",
+        "username",
+        "author_unique_id",
+        "authorUsername"
+
+      ]
+    );
+
+
+  const caption =
+    findFirstValue(
+      raw,
+      [
+
+        "title",
+        "desc",
+        "description",
+        "caption"
+
+      ]
+    );
+
+
+  const likes =
+    findFirstValue(
+      raw,
+      [
+
+        "digg_count",
+        "diggCount",
+        "likes",
+        "like_count"
+
+      ]
+    );
+
+
+  const comments =
+    findFirstValue(
+      raw,
+      [
+
+        "comment_count",
+        "commentCount",
+        "comments"
+
+      ]
+    );
+
+
+  const shares =
+    findFirstValue(
+      raw,
+      [
+
+        "share_count",
+        "shareCount",
+        "shares"
+
+      ]
+    );
+
+
+  const views =
+    findFirstValue(
+      raw,
+      [
+
+        "play_count",
+        "playCount",
+        "views",
+        "view_count"
+
+      ]
+    );
+
 
   return {
-    videoUrl: typeof videoUrl === "string"
-      ? videoUrl
-      : "",
 
-    cover: typeof cover === "string"
-      ? cover
-      : "",
+    videoUrl:
+      typeof videoUrl === "string"
+        ? videoUrl
+        : "",
 
-    authorName: typeof authorName === "string"
-      ? authorName
-      : "TikTok User",
+    cover:
+      typeof cover === "string"
+        ? cover
+        : "",
 
-    username: typeof username === "string"
-      ? username
-      : "",
+    authorName:
+      typeof authorName === "string"
+        ? authorName
+        : "TikTok User",
 
-    caption: typeof caption === "string"
-      ? caption
-      : "",
+    username:
+      typeof username === "string"
+        ? username
+        : "",
 
-    likes: Number(likes || 0),
-    comments: Number(comments || 0),
-    shares: Number(shares || 0),
-    views: Number(views || 0)
+    caption:
+      typeof caption === "string"
+        ? caption
+        : "",
+
+    likes:
+      Number(likes || 0),
+
+    comments:
+      Number(comments || 0),
+
+    shares:
+      Number(shares || 0),
+
+    views:
+      Number(views || 0)
+
   };
+
 }
 
 
 /* =========================================================
-   TIKWM REQUEST
+   TIKWM
 ========================================================= */
 
-async function tikwmRequest(path, params){
+async function tikwmRequest(
+  path,
+  params
+){
+
+  const config =
+    getConfig();
+
 
   const base =
-    (CONFIG.TIKWM_API ||
-      "https://www.tikwm.com/api")
-    .replace(/\/+$/, "");
 
-  const url = new URL(
-    base + "/" + path.replace(/^\/+/, "")
+    (
+      config.TIKWM_API ||
+
+      "https://www.tikwm.com/api"
+
+    ).replace(
+      /\/+$/,
+      ""
+    );
+
+
+  const url =
+    new URL(
+
+      base +
+      "/" +
+      path.replace(
+        /^\/+/,
+        ""
+      )
+
+    );
+
+
+  Object.entries(
+    params || {}
+  ).forEach(
+    ([key, value]) => {
+
+      if(
+
+        value !== undefined &&
+
+        value !== null
+
+      ){
+
+        url.searchParams.set(
+          key,
+          String(value)
+        );
+
+      }
+
+    }
   );
 
-  Object.entries(params || {}).forEach(([key, value]) => {
 
-    if(
-      value !== undefined &&
-      value !== null
-    ){
-      url.searchParams.set(
-        key,
-        String(value)
+  let response;
+
+  try{
+
+    response =
+      await fetch(
+        url.toString(),
+        {
+          method: "GET"
+        }
       );
-    }
 
-  });
+  }catch(error){
 
-  const response = await fetch(url.toString(), {
-    method: "GET"
-  });
+    throw new Error(
+      "Tidak bisa menghubungi TikWM. " +
+      "Kemungkinan CORS."
+    );
+
+  }
+
 
   if(!response.ok){
 
     throw new Error(
+
       "TikWM HTTP " +
+
       response.status +
+
       " - " +
+
       response.statusText
+
     );
 
   }
 
-  const json = await response.json();
+
+  const json =
+    await response.json();
+
 
   if(
+
     json &&
+
     typeof json === "object" &&
+
     json.code !== undefined &&
+
     Number(json.code) !== 0
+
   ){
+
     throw new Error(
+
       "TikWM: " +
-      (json.msg || "request gagal")
+
+      (
+        json.msg ||
+        "request gagal"
+      )
+
     );
+
   }
 
+
   return json;
+
 }
 
 
 /* =========================================================
-   EXTRACT ARRAY FROM API RESPONSE
+   ARRAY RESPONSE
 ========================================================= */
 
 function getArrayFromResponse(json){
 
-  if(!json) return [];
+  if(!json){
+    return [];
+  }
+
 
   const possible = [
 
     json?.data?.comments,
+
     json?.data?.comment,
+
     json?.comments,
+
     json?.data?.list,
+
     json?.list
 
   ];
 
-  for(const item of possible){
 
-    if(Array.isArray(item)){
+  for(
+    const item of possible
+  ){
+
+    if(
+      Array.isArray(item)
+    ){
+
       return item;
+
     }
 
   }
 
+
   return [];
+
 }
 
 
@@ -1048,82 +1572,154 @@ function getArrayFromResponse(json){
    COMMENTS
 ========================================================= */
 
-async function fetchComments(videoUrl){
+async function fetchComments(
+  videoUrl
+){
 
   const results = [];
 
   let cursor = 0;
 
+  const config =
+    getConfig();
+
   const maxComments =
-    Number(CONFIG.MAX_COMMENTS || 100);
+    Number(
+      config.MAX_COMMENTS || 100
+    );
 
   let page = 0;
 
+
   while(
-    results.length < maxComments &&
+
+    results.length <
+      maxComments &&
+
     page < 10
+
   ){
 
     page++;
 
-    const json = await tikwmRequest(
-      "comment/list",
-      {
-        url: videoUrl,
-        count: Math.min(
-          50,
-          maxComments - results.length
-        ),
-        cursor
-      }
-    );
+
+    const json =
+      await tikwmRequest(
+
+        "comment/list",
+
+        {
+
+          url:
+            videoUrl,
+
+          count:
+            Math.min(
+              50,
+              maxComments -
+              results.length
+            ),
+
+          cursor:
+            cursor
+
+        }
+
+      );
+
 
     const comments =
-      getArrayFromResponse(json);
+      getArrayFromResponse(
+        json
+      );
 
-    if(!comments.length){
+
+    if(
+      !comments.length
+    ){
+
       break;
+
     }
 
-    results.push(...comments);
+
+    results.push(
+      ...comments
+    );
+
 
     const data =
-      json?.data || json || {};
+      json?.data ||
+      json ||
+      {};
+
 
     const hasMore =
       Boolean(
+
         data.hasMore ??
+
         data.has_more ??
+
         false
+
       );
+
 
     const nextCursor =
       data.cursor;
 
+
     if(
+
       !hasMore ||
+
       nextCursor === undefined ||
+
       nextCursor === cursor
+
     ){
+
       break;
+
     }
 
-    cursor = nextCursor;
+
+    cursor =
+      nextCursor;
+
 
     setProgress(
+
       Math.min(
+
         55,
-        25 + Math.round(
-          results.length / maxComments * 30
+
+        25 +
+        Math.round(
+
+          results.length /
+          maxComments *
+          30
+
         )
+
       ),
+
       "COMMENTS",
+
       `Mengambil komentar... ${results.length}`
+
     );
 
   }
 
-  return results.slice(0, maxComments);
+
+  return results.slice(
+    0,
+    maxComments
+  );
+
 }
 
 
@@ -1131,148 +1727,261 @@ async function fetchComments(videoUrl){
    COMMENT ID
 ========================================================= */
 
-function getCommentId(comment){
+function getCommentId(
+  comment
+){
 
   return (
+
     comment?.id ||
+
     comment?.cid ||
+
     comment?.comment_id ||
+
     comment?.commentId ||
+
     ""
+
   );
+
 }
 
 
 /* =========================================================
-   REPLY COUNT
+   REPLY TOTAL
 ========================================================= */
 
-function getReplyTotal(comment){
+function getReplyTotal(
+  comment
+){
 
   return Number(
+
     comment?.reply_total ??
+
     comment?.replyTotal ??
+
     comment?.reply_comment_total ??
+
     comment?.reply_count ??
+
     comment?.replyCount ??
+
     0
+
   );
+
 }
 
 
 /* =========================================================
-   REPLIES
+   FETCH REPLIES
 ========================================================= */
 
-async function fetchRepliesForComment(comment){
+async function fetchRepliesForComment(
+  comment
+){
 
   const commentId =
-    getCommentId(comment);
+    getCommentId(
+      comment
+    );
+
 
   if(!commentId){
     return [];
   }
 
+
   const total =
-    getReplyTotal(comment);
+    getReplyTotal(
+      comment
+    );
+
 
   if(total <= 0){
     return [];
   }
 
+
+  const config =
+    getConfig();
+
+
   const results = [];
 
   let cursor = 0;
+
   let page = 0;
 
   const maxReplies =
     Number(
-      CONFIG.MAX_REPLIES_PER_COMMENT || 50
+      config.MAX_REPLIES_PER_COMMENT ||
+      50
     );
 
+
   while(
-    results.length < maxReplies &&
+
+    results.length <
+      maxReplies &&
+
     page < 5
+
   ){
 
     page++;
 
-    const json = await tikwmRequest(
-      "comment/reply",
-      {
-        comment_id: commentId,
-        count: Math.min(
-          50,
-          maxReplies - results.length
-        ),
-        cursor
-      }
-    );
+
+    const json =
+      await tikwmRequest(
+
+        "comment/reply",
+
+        {
+
+          comment_id:
+            commentId,
+
+          count:
+            Math.min(
+              50,
+              maxReplies -
+              results.length
+            ),
+
+          cursor:
+            cursor
+
+        }
+
+      );
+
 
     const replies =
-      getArrayFromResponse(json);
+      getArrayFromResponse(
+        json
+      );
 
-    if(!replies.length){
+
+    if(
+      !replies.length
+    ){
+
       break;
+
     }
 
-    results.push(...replies);
+
+    results.push(
+      ...replies
+    );
+
 
     const data =
-      json?.data || json || {};
+      json?.data ||
+      json ||
+      {};
+
 
     const hasMore =
       Boolean(
+
         data.hasMore ??
+
         data.has_more ??
+
         false
+
       );
+
 
     const nextCursor =
       data.cursor;
 
+
     if(
+
       !hasMore ||
+
       nextCursor === undefined ||
+
       nextCursor === cursor
+
     ){
+
       break;
+
     }
 
-    cursor = nextCursor;
+
+    cursor =
+      nextCursor;
 
   }
 
-  return results.slice(0, maxReplies);
+
+  return results.slice(
+    0,
+    maxReplies
+  );
+
 }
 
 
-async function fetchAllReplies(comments){
+/* =========================================================
+   ALL REPLIES
+========================================================= */
+
+async function fetchAllReplies(
+  comments
+){
 
   const allReplies = [];
 
   let processed = 0;
 
-  for(const comment of comments){
+
+  for(
+    const comment of comments
+  ){
 
     processed++;
 
+
     const total =
-      getReplyTotal(comment);
+      getReplyTotal(
+        comment
+      );
+
 
     setProgress(
-      55 + Math.round(
+
+      55 +
+
+      Math.round(
+
         processed /
-        Math.max(comments.length, 1) *
+        Math.max(
+          comments.length,
+          1
+        ) *
         20
+
       ),
+
       "REPLIES",
+
       `Mencari replies ${processed}/${comments.length} • ${total} reply`
+
     );
+
 
     if(total <= 0){
       continue;
     }
+
 
     try{
 
@@ -1281,15 +1990,24 @@ async function fetchAllReplies(comments){
           comment
         );
 
-      replies.forEach(reply => {
 
-        allReplies.push({
-          ...reply,
-          parentCommentId:
-            getCommentId(comment)
-        });
+      replies.forEach(
+        reply => {
 
-      });
+          allReplies.push({
+
+            ...reply,
+
+            parentCommentId:
+              getCommentId(
+                comment
+              )
+
+          });
+
+        }
+      );
+
 
     }catch(error){
 
@@ -1298,86 +2016,122 @@ async function fetchAllReplies(comments){
         error
       );
 
-      /*
-       * Jangan hentikan seluruh scan hanya
-       * karena satu komentar gagal.
-       */
-
     }
 
-    /*
-     * Beri sedikit jeda supaya request tidak
-     * ditembak sekaligus.
-     */
+
     await sleep(80);
+
   }
 
+
   return allReplies;
+
 }
 
 
 /* =========================================================
-   EXTRACT COMMENT TEXT
+   COMMENT TEXT
 ========================================================= */
 
-function getCommentText(comment){
+function getCommentText(
+  comment
+){
 
   return normalizeText(
+
     comment?.text ||
+
     comment?.content ||
+
     comment?.desc ||
+
     ""
+
   );
+
 }
 
 
 /* =========================================================
-   SCAN STRING RECURSIVELY
+   RECURSIVE STRING SCAN
 ========================================================= */
 
-function collectStrings(value, output, depth = 0){
+function collectStrings(
+  value,
+  output,
+  depth = 0
+){
 
   if(depth > 8){
     return;
   }
 
-  if(typeof value === "string"){
 
-    const text = value.trim();
+  if(
+    typeof value === "string"
+  ){
+
+    const text =
+      value.trim();
+
 
     if(text){
       output.push(text);
     }
 
+
     return;
+
   }
 
-  if(Array.isArray(value)){
 
-    for(const item of value){
+  if(
+    Array.isArray(value)
+  ){
+
+    for(
+      const item of value
+    ){
+
       collectStrings(
         item,
         output,
         depth + 1
       );
+
     }
 
+
     return;
+
   }
 
-  if(value && typeof value === "object"){
 
-    for(const key of Object.keys(value)){
+  if(
+    value &&
+    typeof value === "object"
+  ){
+
+    for(
+      const key of Object.keys(
+        value
+      )
+    ){
 
       collectStrings(
+
         value[key],
+
         output,
+
         depth + 1
+
       );
 
     }
 
   }
+
 }
 
 
@@ -1385,23 +2139,32 @@ function collectStrings(value, output, depth = 0){
    URL EXTRACTION
 ========================================================= */
 
-function extractUrls(text){
+function extractUrls(
+  text
+){
 
   if(!text){
     return [];
   }
 
+
   const matches =
+
     text.match(
       /https?:\/\/[^\s<>"'`]+/gi
     ) || [];
 
-  return matches.map(url => {
 
-    return url
-      .replace(/[),.!?;:'"\]}]+$/g, "");
+  return matches.map(
+    url =>
 
-  });
+      url.replace(
+        /[),.!?;:'"\]}]+$/g,
+        ""
+      )
+
+  );
+
 }
 
 
@@ -1409,41 +2172,70 @@ function extractUrls(text){
    PRESET DETECTOR
 ========================================================= */
 
-function looksLikePresetUrl(url){
+function looksLikePresetUrl(
+  url
+){
 
   const lower =
     url.toLowerCase();
 
+
   const keywords = [
 
     "alightmotion",
+
     "alight-motion",
+
     "alight motion",
+
     "alightmotion.com",
+
     "preset",
+
+    ".xml",
+
     "xml",
+
     "amshare",
+
     "am-preset",
+
     "alight.link"
 
   ];
 
+
   return keywords.some(
     keyword =>
-      lower.includes(keyword)
+      lower.includes(
+        keyword
+      )
   );
+
 }
 
 
 /* =========================================================
-   SCAN PRESETS
+   FIND PRESETS
 ========================================================= */
 
-function findPresetLinks(videoRaw, videoData, comments, replies){
+function findPresetLinks(
+
+  videoRaw,
+
+  videoData,
+
+  comments,
+
+  replies
+
+){
 
   const found = [];
 
-  const seen = new Set();
+  const seen =
+    new Set();
+
 
   function addFromText(
     text,
@@ -1451,19 +2243,38 @@ function findPresetLinks(videoRaw, videoData, comments, replies){
   ){
 
     const urls =
-      extractUrls(text);
+      extractUrls(
+        text
+      );
 
-    for(const url of urls){
 
-      if(!looksLikePresetUrl(url)){
-        continue;
-      }
+    for(
+      const url of urls
+    ){
 
       if(
-        url.includes("tiktok.com")
+        !looksLikePresetUrl(
+          url
+        )
       ){
+
         continue;
+
       }
+
+
+      if(
+        url
+          .toLowerCase()
+          .includes(
+            "tiktok.com"
+          )
+      ){
+
+        continue;
+
+      }
+
 
       const normalized =
         url.replace(
@@ -1471,18 +2282,33 @@ function findPresetLinks(videoRaw, videoData, comments, replies){
           ""
         );
 
+
       const key =
         normalized.toLowerCase();
 
-      if(seen.has(key)){
+
+      if(
+        seen.has(key)
+      ){
+
         continue;
+
       }
+
 
       seen.add(key);
 
+
       found.push({
-        url,
-        source
+
+        url:
+
+          url,
+
+        source:
+
+          source
+
       });
 
     }
@@ -1490,9 +2316,8 @@ function findPresetLinks(videoRaw, videoData, comments, replies){
   }
 
 
-  /*
-   * Scan seluruh response video
-   */
+  /* VIDEO METADATA */
+
   const rawStrings = [];
 
   collectStrings(
@@ -1500,58 +2325,74 @@ function findPresetLinks(videoRaw, videoData, comments, replies){
     rawStrings
   );
 
-  rawStrings.forEach(text => {
 
-    addFromText(
-      text,
-      "Video metadata"
-    );
+  rawStrings.forEach(
+    text => {
 
-  });
+      addFromText(
+        text,
+        "Video metadata"
+      );
 
-
-  /*
-   * Caption
-   */
-  addFromText(
-    videoData.caption,
-    "Caption"
+    }
   );
 
 
-  /*
-   * Comments
-   */
-  comments.forEach((comment, index) => {
+  /* CAPTION */
 
-    const text =
-      getCommentText(comment);
+  addFromText(
 
-    addFromText(
-      text,
-      `Comment #${index + 1}`
-    );
+    videoData.caption,
 
-  });
+    "Caption"
+
+  );
 
 
-  /*
-   * Replies
-   */
-  replies.forEach((reply, index) => {
+  /* COMMENTS */
 
-    const text =
-      getCommentText(reply);
+  comments.forEach(
 
-    addFromText(
-      text,
-      `Reply #${index + 1}`
-    );
+    (comment, index) => {
 
-  });
+      addFromText(
+
+        getCommentText(
+          comment
+        ),
+
+        `Comment #${index + 1}`
+
+      );
+
+    }
+
+  );
+
+
+  /* REPLIES */
+
+  replies.forEach(
+
+    (reply, index) => {
+
+      addFromText(
+
+        getCommentText(
+          reply
+        ),
+
+        `Reply #${index + 1}`
+
+      );
+
+    }
+
+  );
 
 
   return found;
+
 }
 
 
@@ -1559,48 +2400,96 @@ function findPresetLinks(videoRaw, videoData, comments, replies){
    RENDER VIDEO
 ========================================================= */
 
-function renderVideo(data){
+function renderVideo(
+  data
+){
 
-  $("authorName").textContent =
-    data.authorName || "TikTok User";
+  $("authorName")
+    .textContent =
 
-  $("authorUsername").textContent =
-    data.username
-      ? "@" + data.username.replace(/^@/, "")
-      : "@unknown";
+      data.authorName ||
+      "TikTok User";
 
-  $("caption").textContent =
-    data.caption || "(tanpa caption)";
 
-  $("statLikes").textContent =
-    "❤️ " + formatNumber(data.likes);
+  $("authorUsername")
+    .textContent =
 
-  $("statComments").textContent =
-    "💬 " + formatNumber(data.comments);
+      data.username
 
-  $("statShares").textContent =
-    "↗️ " + formatNumber(data.shares);
+        ? "@" +
+          data.username
+            .replace(
+              /^@/,
+              ""
+            )
 
-  $("statViews").textContent =
-    "👁️ " + formatNumber(data.views);
+        : "@unknown";
+
+
+  $("caption")
+    .textContent =
+
+      data.caption ||
+      "(tanpa caption)";
+
+
+  $("statLikes")
+    .textContent =
+
+      "❤️ " +
+      formatNumber(
+        data.likes
+      );
+
+
+  $("statComments")
+    .textContent =
+
+      "💬 " +
+      formatNumber(
+        data.comments
+      );
+
+
+  $("statShares")
+    .textContent =
+
+      "↗️ " +
+      formatNumber(
+        data.shares
+      );
+
+
+  $("statViews")
+    .textContent =
+
+      "👁️ " +
+      formatNumber(
+        data.views
+      );
 
 
   const video =
     $("videoPlayer");
 
+
   if(data.videoUrl){
 
-    video.src = data.videoUrl;
+    video.src =
+      data.videoUrl;
 
   }else{
 
-    video.removeAttribute("src");
+    video.removeAttribute(
+      "src"
+    );
 
   }
 
 
   const download =
     $("downloadVideo");
+
 
   if(data.videoUrl){
 
@@ -1624,96 +2513,130 @@ function renderVideo(data){
    RENDER PRESETS
 ========================================================= */
 
-function renderPresets(presets){
+function renderPresets(
+  presets
+){
 
   const list =
     $("presetList");
 
-  $("presetCount").textContent =
-    presets.length + " LINK";
+
+  $("presetCount")
+    .textContent =
+
+      presets.length +
+      " LINK";
+
 
   if(!presets.length){
 
     list.innerHTML = `
+
       <div class="empty">
+
         Tidak ditemukan link preset dari
         caption, komentar, reply, atau metadata.
+
       </div>
+
     `;
 
     return;
+
   }
 
 
   list.innerHTML =
-    presets.map((preset, index) => {
 
-      return `
-        <div class="preset">
+    presets.map(
+      (preset, index) => {
 
-          <div class="preset-top">
+        const safeUrl =
+          JSON.stringify(
+            preset.url
+          );
 
-            <div class="preset-number">
-              ${index + 1}
+
+        return `
+
+          <div class="preset">
+
+            <div class="preset-top">
+
+              <div class="preset-number">
+
+                ${index + 1}
+
+              </div>
+
+              <div class="preset-body">
+
+                <div class="preset-name">
+
+                  Preset / Alight Motion Link
+
+                </div>
+
+                <div class="preset-source">
+
+                  Sumber:
+                  ${escapeHtml(
+                    preset.source
+                  )}
+
+                </div>
+
+                <div class="preset-url">
+
+                  ${escapeHtml(
+                    preset.url
+                  )}
+
+                </div>
+
+              </div>
+
             </div>
 
-            <div class="preset-body">
+            <div class="preset-actions">
 
-              <div class="preset-name">
-                Preset / Alight Motion Link
-              </div>
+              <button
+                class="action open"
+                onclick='openPreset(${safeUrl})'
+              >
 
-              <div class="preset-source">
-                Sumber: ${escapeHtml(
-                  preset.source
-                )}
-              </div>
+                BUKA PRESET
 
-              <div class="preset-url">
-                ${escapeHtml(
-                  preset.url
-                )}
-              </div>
+              </button>
+
+              <button
+                class="action"
+                onclick='copyPreset(${safeUrl})'
+              >
+
+                COPY LINK
+
+              </button>
 
             </div>
 
           </div>
 
-          <div class="preset-actions">
+        `;
 
-            <button
-              class="action open"
-              onclick='openPreset(${JSON.stringify(
-                preset.url
-              )})'
-            >
-              BUKA PRESET
-            </button>
-
-            <button
-              class="action"
-              onclick='copyPreset(${JSON.stringify(
-                preset.url
-              )})'
-            >
-              COPY LINK
-            </button>
-
-          </div>
-
-        </div>
-      `;
-
-    }).join("");
+      }
+    ).join("");
 
 }
 
 
 /* =========================================================
-   OPEN / COPY
+   OPEN PRESET
 ========================================================= */
 
-function openPreset(url){
+function openPreset(
+  url
+){
 
   window.open(
     url,
@@ -1724,62 +2647,60 @@ function openPreset(url){
 }
 
 
-async function copyPreset(url){
+/* =========================================================
+   COPY PRESET
+========================================================= */
+
+async function copyPreset(
+  url
+){
 
   try{
 
-    await navigator.clipboard.writeText(
-      url
-    );
+    await navigator
+      .clipboard
+      .writeText(
+        url
+      );
 
-    alert("Link preset berhasil dicopy.");
+    alert(
+      "Link preset berhasil dicopy."
+    );
 
   }catch{
 
-    /*
-     * Fallback untuk browser lama
-     */
     const textarea =
-      document.createElement("textarea");
+      document.createElement(
+        "textarea"
+      );
 
-    textarea.value = url;
+
+    textarea.value =
+      url;
+
 
     document.body.appendChild(
       textarea
     );
 
+
     textarea.select();
 
-    document.execCommand("copy");
+
+    document.execCommand(
+      "copy"
+    );
+
 
     textarea.remove();
 
-    alert("Link preset berhasil dicopy.");
+
+    alert(
+      "Link preset berhasil dicopy."
+    );
 
   }
 
-}
-
-
-/* =========================================================
-   DEBUG
-========================================================= */
-
-function showDebug(data){
-
-  const box =
-    $("debugBox");
-
-  box.textContent =
-    typeof data === "string"
-      ? data
-      : JSON.stringify(
-          data,
-          null,
-          2
-        );
-
-  box.classList.add("show");
 }
 
 
@@ -1791,18 +2712,34 @@ async function startScan(){
 
   clearError();
 
-  $("result").classList.remove("show");
-  $("debugBox").classList.remove("show");
+
+  $("result")
+    .classList.remove(
+      "show"
+    );
+
+
+  $("debugBox")
+    .classList.remove(
+      "show"
+    );
+
 
   state.comments = [];
+
   state.replies = [];
+
   state.allTexts = [];
+
   state.presets = [];
+
   state.videoData = null;
 
 
   const url =
-    $("tiktokUrl").value.trim();
+    $("tiktokUrl")
+      .value
+      .trim();
 
 
   if(!url){
@@ -1812,6 +2749,7 @@ async function startScan(){
     );
 
     return;
+
   }
 
 
@@ -1822,39 +2760,59 @@ async function startScan(){
     );
 
     return;
+
   }
 
 
   const button =
     $("scanButton");
 
-  button.disabled = true;
+
+  button.disabled =
+    true;
+
+
   button.textContent =
     "SCANNING...";
 
 
   try{
 
-    state.originalUrl = url;
+    state.originalUrl =
+      url;
 
 
-    /* -----------------------------------------
-       STEP 1 — VIDEO
-    ----------------------------------------- */
+    /* =========================
+       VIDEO
+    ========================= */
 
-    activateStep("Video");
-
-    setProgress(
-      8,
-      "VIDEO",
-      "Mengambil data video TikTok..."
+    activateStep(
+      "Video"
     );
 
+
+    setProgress(
+
+      8,
+
+      "VIDEO",
+
+      "Mengambil data video TikTok..."
+
+    );
+
+
     const rawVideo =
-      await fetchTikTokVideo(url);
+      await fetchTikTokVideo(
+        url
+      );
+
 
     const videoData =
-      extractVideoData(rawVideo);
+      extractVideoData(
+        rawVideo
+      );
+
 
     state.videoData =
       videoData;
@@ -1865,29 +2823,35 @@ async function startScan(){
     );
 
 
-    /* -----------------------------------------
-       STEP 2 — COMMENTS
-    ----------------------------------------- */
+    /* =========================
+       COMMENTS
+    ========================= */
 
-    activateStep("Comments");
-
-    setProgress(
-      28,
-      "COMMENTS",
-      "Mengambil komentar TikTok..."
+    activateStep(
+      "Comments"
     );
 
 
-    /*
-     * TikWM biasanya menerima URL video
-     * pada endpoint comment/list.
-     */
+    setProgress(
+
+      28,
+
+      "COMMENTS",
+
+      "Mengambil komentar TikTok..."
+
+    );
+
+
     let comments = [];
+
 
     try{
 
       comments =
-        await fetchComments(url);
+        await fetchComments(
+          url
+        );
 
     }catch(error){
 
@@ -1896,30 +2860,35 @@ async function startScan(){
         error
       );
 
-      /*
-       * Tetap lanjut ke scan caption /
-       * metadata supaya video tetap tampil.
-       */
 
-      $("commentsInfo").textContent =
-        "Komentar tidak dapat diambil: " +
-        error.message;
+      $("commentsInfo")
+        .textContent =
+
+          "Komentar tidak dapat diambil: " +
+          error.message;
 
     }
+
 
     state.comments =
       comments;
 
 
-    /* -----------------------------------------
-       STEP 3 — REPLIES
-    ----------------------------------------- */
+    /* =========================
+       REPLIES
+    ========================= */
 
-    activateStep("Replies");
+    activateStep(
+      "Replies"
+    );
+
 
     let replies = [];
 
-    if(comments.length){
+
+    if(
+      comments.length
+    ){
 
       replies =
         await fetchAllReplies(
@@ -1928,72 +2897,99 @@ async function startScan(){
 
     }
 
+
     state.replies =
       replies;
 
 
-    /* -----------------------------------------
-       STEP 4 — SCAN
-    ----------------------------------------- */
+    /* =========================
+       SCAN
+    ========================= */
 
-    activateStep("Scan");
+    activateStep(
+      "Scan"
+    );
+
 
     setProgress(
+
       80,
+
       "SCAN",
+
       "Memindai caption, komentar, replies, dan metadata..."
+
     );
 
 
     const presets =
       findPresetLinks(
+
         rawVideo,
+
         videoData,
+
         comments,
+
         replies
+
       );
+
 
     state.presets =
       presets;
 
 
-    /* -----------------------------------------
+    /* =========================
        RENDER
-    ----------------------------------------- */
+    ========================= */
 
     renderPresets(
       presets
     );
 
 
-    $("commentsInfo").innerHTML =
-      `
-      Video berhasil diambil.<br>
-      Komentar dipindai:
-      <b>${comments.length}</b><br>
-      Replies dipindai:
-      <b>${replies.length}</b><br>
-      Link preset ditemukan:
-      <b>${presets.length}</b>
+    $("commentsInfo")
+      .innerHTML = `
+
+        Video berhasil diambil.<br>
+
+        Komentar dipindai:
+        <b>${comments.length}</b><br>
+
+        Replies dipindai:
+        <b>${replies.length}</b><br>
+
+        Link preset ditemukan:
+        <b>${presets.length}</b>
+
       `;
 
 
-    /* -----------------------------------------
+    /* =========================
        DONE
-    ----------------------------------------- */
+    ========================= */
 
-    activateStep("Done");
+    activateStep(
+      "Done"
+    );
+
 
     setProgress(
+
       100,
+
       "DONE",
+
       "Scanning selesai."
+
     );
 
 
-    $("result").classList.add(
-      "show"
-    );
+    $("result")
+      .classList.add(
+        "show"
+      );
 
 
   }catch(error){
@@ -2002,15 +2998,23 @@ async function startScan(){
       error
     );
 
+
     showError(
+
       "Scanner gagal: " +
       error.message
+
     );
 
+
     setProgress(
+
       0,
+
       "ERROR",
+
       "Scanning gagal."
+
     );
 
 
@@ -2028,25 +3032,28 @@ async function startScan(){
 
 
 /* =========================================================
-   ENTER KEY
+   ENTER
 ========================================================= */
 
-$("tiktokUrl").addEventListener(
-  "keydown",
-  event => {
+$("tiktokUrl")
+  .addEventListener(
+    "keydown",
+    event => {
 
-    if(event.key === "Enter"){
+      if(
+        event.key === "Enter"
+      ){
 
-      event.preventDefault();
+        event.preventDefault();
 
-      startScan();
+        startScan();
+
+      }
 
     }
-
-  }
-);
+  );
 
 </script>
 
 </body>
-</html>
+  </html>
